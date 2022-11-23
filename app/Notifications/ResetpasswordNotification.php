@@ -13,6 +13,7 @@ class ResetpasswordNotification extends Notification
 {
     use Queueable;
     private $user;
+    private $password;
     /**
      * Create a new notification instance.
      *
@@ -47,7 +48,7 @@ class ResetpasswordNotification extends Notification
             ->subject('welcome '.$notifiable->first_name)
             ->greeting('your credentials are :-')
             ->line('Email: '.$notifiable->email)
-            ->line('Password: '.$notifiable->password)
+            ->line('Password: '.$this->password)
             ->line('Thank you for using our application!');
     }
 

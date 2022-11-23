@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Notifications\ResetpasswordNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 
 class ResetpasswordController extends Controller
@@ -24,8 +25,10 @@ class ResetpasswordController extends Controller
             'password' => 'required|min:5',
             'password_confirmation' =>'required|min:5|same:password'
         ]);
-        $user->update($attributes);
-        Notification::send($user, new ResetpasswordNotification(Auth::user()));
+        $user->update([
+            'password' => Hash::make($attributes['password'])
+        ]);
+        Notification::send($user, new ResetpasswordNotification(Auth::user(),$attributes['password']));
         
         return redirect()->route('users.index');
     }

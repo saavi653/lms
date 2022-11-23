@@ -14,16 +14,18 @@ class Category extends Model
         'created_by',
         'slug'
     ];
-    public function user(){
+    public function user() {
       
         return $this->belongsTo(User::class,'created_by');
     }
     public function scopeSearch($query,$search){
+
         return $query->where('name','like','%'.$search.'%')->get();
         
     }
     public function getNameAttribute($value)
     {
+        
         return $this->attributes['name'] = ucfirst($value);
     }
     public function scopeSort($query)
@@ -32,4 +34,5 @@ class Category extends Model
         return $query->orderby('created_at','desc');
         
     }
+  
 }

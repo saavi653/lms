@@ -23,14 +23,16 @@ class LoginController extends Controller
         { 
             if(Auth::attempt($data)) 
             {
-                if($user->is_employee) {
+                // if($user->is_employee) 
+                // {
 
-                return redirect()->route('employee');
+                //      return redirect()->route('employee');
+                // }
                 
+                // return redirect()->route('dashboard.index');           
+                return redirect('/');
             }
-
-            return redirect()->route('dashboard');           
-        } 
+            return back()->with('success','incorrect credential'); 
         }    
         return back()->with('success','user inactive');  
     }

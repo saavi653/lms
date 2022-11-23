@@ -43,7 +43,7 @@ class SetPasswordNotification extends Notification
     {
         return (new MailMessage)
             ->subject('please set your account password')
-            ->greeting('welcome'.$notifiable->first_name)
+            ->greeting('welcome'."  ".$notifiable->first_name)
             ->action('set initial password', route('setpassword',$notifiable))
             ->line('Thank you for using our application!');
     }

@@ -9,10 +9,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Relations\Concerns\SupportsDefaultModels;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes ,ReceivesWelcomeNotification;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes ,ReceivesWelcomeNotification,Sluggable;
+    
     /**
      * The attributes that are mass assignable.
      *
@@ -34,11 +37,14 @@ class User extends Authenticatable
         'role_id'
     ];
 
-    public function role() {
-
-        return $this->belongsTo(Role::class);
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => ['first_name','last_name']
+            ]
+        ];
     }
-
     public function scopeSearch($query,$search)
     {
        
@@ -49,32 +55,23 @@ class User extends Authenticatable
     public function scopeSort($query)
     {
 
-        return $query->orderby('created_at','desc');
-        
+        return $query->orderby('created_at','desc');  
     }
 
     public function scopeGroup($query,$role)
     {
+
         return $query->where('role_id',$role);
     }
-    public function getFirstNameAttribute($value)
-    {
-        
-        return $this->attributes['first_name'] = ucwords($value);
-        
-    }
+
     public function getFullNameAttribute()
     {
 
-        return $this->first_name." ".$this->last_name;
-    }
-    public function getLastNameAttribute($value)
-    {
-
-        return $this->attributes['last_name'] = ucfirst($value);
+        return ucfirst($this->first_name)." ".ucfirst($this->last_name);
     }
     public function getIsAdminAttribute()
     {
+
         return $this->role_id==Role::ADMIN;
     }
     public function getIsEmployeeAttribute()
@@ -86,6 +83,11 @@ class User extends Authenticatable
     {
     
         return $this->role_id==Role::TRAINER;
+    }
+    public function role()
+    {
+   
+        return $this->belongsTo(Role::class,);
     }
 
     /**

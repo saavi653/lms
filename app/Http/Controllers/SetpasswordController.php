@@ -22,20 +22,19 @@ class SetpasswordController extends Controller
             'password_confirmation' =>'required|min:4|same:password',      
         ]);
         if($user->password==null){
-
       
-            if($user->update([
+            $user->update([
                 'password' => Hash::make($attributes['password']),
                 'email_status' => 1
-            ])) {
-                    
-                    $login_user=new LoginController();
-                    $url = $login_user->login($request);
-                    return redirect($url->getTargetUrl());
-                    
-            }
-        }    
-        
+            ]);
+            
+            $login_user=new LoginController();
+            $url = $login_user->login($request);
+
+            return redirect($url->getTargetUrl());              
+        }  
+
+        return back()->with('success','password already set');    
     }
    
 }

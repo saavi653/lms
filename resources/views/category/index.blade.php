@@ -9,7 +9,7 @@
         </form>
   <div class="dropdown drop d6">
     <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-    {{Auth::user()->first_name." ".Auth::user()->last_name }}
+    {{Auth::user()->fullname }}
     </button>
     <ul class="dropdown-menu">
       <li><a class="dropdown-item " href="">Accounts & Settings</a></li>
@@ -53,7 +53,7 @@
   <tr>
     <td>{{ $category->name }}</td>
 
-    <td>{{ $category->user->first_name }}  {{$category->user->last_name}}
+    <td>{{ $category->user->fullname}}
       <span class="eml">{{ $category->user->email }}</span>
     </td>
     <td></td>

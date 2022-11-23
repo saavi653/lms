@@ -1,5 +1,4 @@
 @include('dashboard')
-
 <div class="top">
   <h3 class="head1">Users</h3>
   <form action="" method="get">
@@ -10,9 +9,8 @@
   </form>
   <div class="dropdown drop d6">
     <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-      {{ Auth::user()->fullname}}
+      {{ Auth::user()->fullname }}
     </button>
-  
     <ul class="dropdown-menu">
       <li><a class="dropdown-item " href="">Accounts & Settings</a></li>
       <li><a class="dropdown-item " href="{{ route('logout') }}">Logout</a></li>
@@ -60,9 +58,12 @@
     <th>
     </th>
   </tr>
-  @foreach($data as $user)
+  @foreach($users as $user)
+  @if($user->is_admin)
+    @continue
+  @endif
   <tr>
-    <td> {{ $user->first_name ." ".$user->last_name}}
+    <td> {{ $user->fullname}}
       <span class='eml'> {{$user->email}}</span>
     </td>
     <td>{{ $user->role->name }}</td>
@@ -101,7 +102,7 @@
           </li>
           @endif
           <li>
-            <a class="black" href="{{ route('reset-password', $user) }}">reset-password</a>
+            <a class="black" href="{{ route('resetpassword.index', $user) }}">reset-password</a>
           </li>
         </ul>
     </td>

@@ -17,24 +17,24 @@ class UserController extends Controller
 
     if($request['search'])
     {
-        $data=User::Search($request['search']);
+        $users=User::Search($request['search']);
     }
     elseif($request['sort'])
     {
        
-        $data=User::Sort()->get();
+        $users=User::Sort()->get();
       
     }
     elseif($request['role'])
     {
-        $data=User::group($request['role'])->get();
+        $users=User::group($request['role'])->get();
     }
     else
     {
-        $data=User::all();
+        $users=User::all();
     }
     $roles = Role::where('slug','!=','admin')->get();  
-    return view('user.index',['data'=>$data,'roles'=>$roles]);
+    return view('user.index',['users'=>$users,'roles'=>$roles]);
    }
 
    public function create() {
@@ -46,7 +46,6 @@ class UserController extends Controller
     
        $roles = Role::where('slug','!=','admin')->get();
        $roles=$roles->pluck('id');
-       $slug=$request->first_name."_".$request->last_name;
         $attributes= $request->validate(
             [
                 'first_name'=>'required|min:3|max:255',
@@ -58,7 +57,6 @@ class UserController extends Controller
                 Rule::in($roles) ]        
             ] );
                 $attributes +=[
-                    'slug' => $slug,
                     'created_by' => Auth::id()
                 ];
             $restore=User::where('email',$request->email)->withTrashed()->first();
@@ -73,15 +71,23 @@ class UserController extends Controller
             else{
                 $user = User::create($attributes);
                 Notification::send($user, new SetPasswordNotification(Auth::user()));
-                return redirect()->route('users.index')->with('success','user created successfully');
-                // $expiresAt = now()->addDay();
-                // $user->sendWelcomeNotification($expiresAt);
+               
+                if($request->get('submit') == 'INVITE USER')
+                {
+
+                    return redirect()->route('users.index')->with('success','user created successfully');
+                }
+                
+                return back()->with('success','user created successfully');
+
             }
             return back();
    }
 
    public function edit(User $user) {
-    return view('user.edit',['user'=>$user]);
+    $roles = Role::where('slug','!=','admin')->get();
+
+    return view('user.edit',['user'=>$user,'roles'=> $roles]);
    }
 
    public function update(Request $req ,User $user) {
@@ -91,7 +97,6 @@ class UserController extends Controller
             'first_name'=>'required|min:3',
             'last_name' =>'required|min:3',
             'email'=>'email',
-            'gender' => 'required',
             'phone' => 'required|integer'
         ] );
         
