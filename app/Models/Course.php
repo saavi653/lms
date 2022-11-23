@@ -10,6 +10,10 @@ class Course extends Model
 {
     use HasFactory, Sluggable;
 
+    CONST PUBLISH=1;
+    CONST ARCHIEVE=2;
+    CONST DRAFT=3;
+
     public function sluggable(): array
     {
         return [
@@ -58,13 +62,18 @@ class Course extends Model
     public function scopeSort($query, $order)
     {
 
-        if ($order == 'asc') {
+        if ($order == 'asc') 
+        {
 
             return $query->orderby('title', 'asc')->get();
-        } elseif ($order == 'new') {
+        } 
+        elseif ($order == 'new') 
+        {
 
             return $query->orderby('created_at', 'desc')->get();
-        } else {
+        } 
+        else
+        {
 
             return $query->orderby('title', 'desc')->get();
         }
@@ -73,6 +82,10 @@ class Course extends Model
     {
 
         return $query->where('category_id', $order)->get();
+    }
+    public function scopeVisible($query,$user)
+    {
+        return $query->where('user_id',$user)->get();
     }
     public function status()
     {

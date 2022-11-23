@@ -15,21 +15,16 @@ class LoginController extends Controller
     {
        $user=User::where('email',$request->email)->first();
         $data=$request->validate([
-            'email' => 'required',
-            'password' => 'required'
+
+            'email' => 'required|email|min:3|max:255',
+            'password' => 'required|min:3|max:255'
+            
         ]);
       
         if($user->email_status)
         { 
             if(Auth::attempt($data)) 
-            {
-                // if($user->is_employee) 
-                // {
-
-                //      return redirect()->route('employee');
-                // }
-                
-                // return redirect()->route('dashboard.index');           
+            {       
                 return redirect('/');
             }
             return back()->with('success','incorrect credential'); 

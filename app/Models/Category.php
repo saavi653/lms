@@ -2,18 +2,28 @@
 
 namespace App\Models;
 
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Category extends Model
 {
-    use HasFactory;
+    use HasFactory,Sluggable;
     protected $fillable = [
         'name',
         'status',
         'created_by',
         'slug'
     ];
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => ['name']
+            ]
+        ];
+    }
     public function user() {
       
         return $this->belongsTo(User::class,'created_by');
@@ -34,5 +44,17 @@ class Category extends Model
         return $query->orderby('created_at','desc');
         
     }
+    public function scopeVisible($query)
+    {
+
+        return $query->where('created_by',Auth::id());
+    }
+    public function scopeActive($query)
+    {
+       
+        return $query->where('status',true);
+    }
+
+
   
 }

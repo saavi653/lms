@@ -10,44 +10,37 @@ class UnitController extends Controller
 {
     public function create(Course $course){
 
-       return view('unit.create',compact('course'));
+       return view('unit.create', compact('course'));
     }
-    public function store(Course $course,Request $request){
+    public function store(Course $course, Request $request){
        
         $attributes = $request->validate([
-
             'title' => 'required|min:3|max:255',
             'description' => 'required|min:3',
         ]);
 
         $unit=Unit::create($attributes);
-        $course_id=$course->id;
-        $unit_id=$unit->id;
-     
         CourseUnit::create([
-
-            'course_id' => $course_id,
-            'unit_id' => $unit_id
+            'course_id' => $course->id,
+            'unit_id' => $unit->id
 
         ]);
        
-        if($request['Submit']=='Save')
+        if ($request['Submit']=='Save')
         {
-
-            return redirect()->route('courses.show',$course)->with('success','unit created successfully');
+            return redirect()->route('courses.show', $course)
+                ->with('success','unit created successfully');
         }
 
-        return back()->with('success','unit created successfully');
+        return back()->with('success', 'unit created successfully');
      }
-     public function edit(Course $course,Unit $unit )
+     public function edit(Course $course, Unit $unit )
     {
-
         return view('unit.edit',compact('unit','course'));
     }
     public function update(Request $request,Course $course,Unit $unit){
 
         $attributes = $request->validate([
-
             'title' => 'required|min:3|max:255',
             'description' => 'required|min:3',
             
@@ -55,13 +48,14 @@ class UnitController extends Controller
 
         $unit->update($attributes);
 
-        return redirect()->route('courses.show',$course)->with('success','unit updated successfully');;
+        return redirect()->route('courses.show', $course)
+            ->with('success','unit updated successfully');;
        
      }
      public function delete(Unit $unit)
      {
         $unit->delete();
 
-        return back()->with('success','unit deleted successfully');;
+        return back()->with('success', 'unit deleted successfully');;
      }
 }

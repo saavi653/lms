@@ -31,9 +31,10 @@ class UserController extends Controller
     }
     else
     {
-        $users=User::all();
+        $users=User::where('created_by',Auth::id())->get();
     }
-    $roles = Role::where('slug','!=','admin')->get();  
+    $roles = Role::where('slug','!=','admin')->get(); 
+
     return view('user.index',['users'=>$users,'roles'=>$roles]);
    }
 
@@ -52,7 +53,7 @@ class UserController extends Controller
                 'last_name'=>'required|min:3|max:255',
                 'email'=>'email|required',
                 'gender' => 'required',
-                'phone' => 'required|numeric|min:10',
+                'phone' => 'required|numeric|max:10',
                 'role_id' => ['required',
                 Rule::in($roles) ]        
             ] );
@@ -68,7 +69,8 @@ class UserController extends Controller
                     return redirect()->route('user')->with('success','user restored successfully');
                 }
             }
-            else{
+            else
+            {
                 $user = User::create($attributes);
                 Notification::send($user, new SetPasswordNotification(Auth::user()));
                
@@ -96,16 +98,17 @@ class UserController extends Controller
         [
             'first_name'=>'required|min:3',
             'last_name' =>'required|min:3',
-            'email'=>'email',
-            'phone' => 'required|integer'
+            'email'=>'email|min:3|max:255|required',
+            'phone' => 'required|numeric|between:9,11'
         ] );
-        
        $user->update($data);
+
        return redirect()->route('users.index')->with('success','user updated successfully');
    }
 
    public function delete(User $user) {
        $user->delete();
+
        return redirect()->route('users.index')->with('success','user deleted successfully');
    }
    public function status(User $user) {

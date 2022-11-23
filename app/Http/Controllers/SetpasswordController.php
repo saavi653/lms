@@ -17,9 +17,11 @@ class SetpasswordController extends Controller
     }
     public function setpassword(Request $request , User $user){
     
-       $attributes=$request->validate([
-            'password'=>'required|min:4',
-            'password_confirmation' =>'required|min:4|same:password',      
+       $attributes=$request->validate([ 
+
+            'password'=>'required|min:3|max:255',
+            'password_confirmation' =>'required|min:3|max:255|same:password',
+                  
         ]);
         if($user->password==null){
       

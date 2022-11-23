@@ -7,55 +7,62 @@ use App\Models\Course;
 use App\Models\Level;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class CourseController extends Controller
 {
     
     public function index(Request $request)
     {
-        $categories=Category::get();
+        $categories=Category::visible()->active()->get();
         $levels=Level::get();
-       if($request['search'])
+       if ($request['search'])
        {
             $courses= Course::search($request['search']);    
        }
-       elseif($request['category'])
+       elseif ($request['category'])
        {
             $courses= Course::filter($request['category']);
        }
-       elseif($request['level'])
+       elseif ($request['level'])
        {
             $courses= Course::levelfind($request['level']);
        }
-       elseif($request['order'])
+       elseif ($request['order'])
        {
             $courses= Course::sort($request['order']);
        }
-       elseif($request['sort'])
+       elseif ($request['sort'])
        {
             $courses = Course::categorygroup($request['sort']);
        }
        else
        {
-            $courses=Course::get();
+            $courses=Course::visible(Auth::id());
        }
 
-        return view('course.index',compact('courses','categories','levels'));
-    }    
-    public function create(){
-        $categories = Category::get();
+        return view('course.index', compact('courses', 'categories', 'levels'));
+    }   
+
+    public function create()
+    {
+        $categories=Category::visible()->active()->get();
         $levels= Level::get();
 
-        return view('course.create',compact('categories','levels'));
+        return view('course.create',compact('categories', 'levels'));
     }
-    public function store(Request $request){
 
+    public function store(Request $request)
+    {
+        $categories=Category::visible()->active()->pluck('id')->toArray();
+    
         $attributes = $request->validate([
             'title' => 'required|min:3|max:255',
             'description' => 'required|min:3',
-            'category_id' => 'required',
             'level_id' => 'required',
-
+            'category_id' => ['required',
+            Rule::in($categories)
+            ]  
         ]);
       
         $attributes +=[
@@ -64,7 +71,7 @@ class CourseController extends Controller
             'status_id' => 1
 
         ];
-        if($request['certificate'])
+        if ($request['certificate'])
         {
             $attributes+=[
 
@@ -72,39 +79,40 @@ class CourseController extends Controller
             ];
         }
         Course::create($attributes);
-        if($request->get('save')=='Save')
+        if ($request->get('save')=='Save')
         {
-            
-            return redirect()->route('courses.index')->with('success','course created successfully');
+            return redirect()->route('courses.index')
+                ->with('success', 'course created successfully');
         }
 
-        return back()->with('success','course created successfully');    
+        return back()->with('success', 'course created successfully');    
     }
 
     public function show(Course $course)
     {
-    
-        return view('course.show',compact('course'));
+
+        return view('course.show', compact('course'));
     }
 
     public function edit(Course $course)
     {
-        $categories = Category::get();
+        $categories=Category::visible()->active();
         $levels= Level::get();
 
-        return view('course.edit',compact('categories','levels','course'));
-       
+        return view('course.edit', compact('categories', 'levels', 'course'));
     }
 
-    public function update(Course $course,Request $request){
-      
+    public function update(Course $course, Request $request){
+
+        $categories=Category::visible()->active()->pluck('id')->toArray();
         $attributes = $request->validate([
 
             'title' => 'required|min:3|max:255',
             'description' => 'required|min:3',
-            'category_id' => 'required',
             'level_id' => 'required',
-            
+            'category_id' => ['required',
+                Rule::in($categories)
+            ],
         ]);
       
         $attributes +=[
@@ -114,42 +122,41 @@ class CourseController extends Controller
             
         ];
 
-        if($request['certificate'])
+        if ($request['certificate'])
         {
             $attributes+=[
                 
-                'certificate' => 1
+                'certificate' => TRUE
             ];
         }
         else
         {
             $attributes+=[
                 
-                'certificate' => 0
+                'certificate' => FALSE
             ];
         }
         $course->update($attributes);
 
-            return redirect()->route('courses.show',$course)->with('success','course updated successfully');
-        
-        
+        return redirect()->route('courses.show',$course)
+            ->with('success','course updated successfully'); 
     }
 
-    public function status(Request $request,Course $course)
+    public function status(Request $request, Course $course)
     {
-        if($request['status']=='publish')
+        if ($request['status']=='publish')
         {
-            $newstatus=['status_id' => 1];
+            $newstatus=['status_id' => Course::PUBLISH];
             $course->update($newstatus);
         }
-        elseif($request['status']=='archieve')
+        elseif ($request['status']=='archieve')
         {
-            $newstatus=['status_id' => 2];
+            $newstatus=['status_id' => Course::ARCHIEVE];
             $course->update($newstatus);
         }
         else
         {
-            $newstatus=['status_id' => 3];
+            $newstatus=['status_id' => Course::DRAFT];
             $course->update($newstatus);
         }
 

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->boolean('status')->default(0);
             $table->timestamps();
             $table->foreign('created_by')->references('id')->on('users');
+            $table->softDeletes();
            
         });
     }    

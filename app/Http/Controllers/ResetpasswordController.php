@@ -22,8 +22,8 @@ class ResetpasswordController extends Controller
     public function resetpassword(User $user, Request $request){
       
        $attributes= $request->validate([
-            'password' => 'required|min:5',
-            'password_confirmation' =>'required|min:5|same:password'
+            'password' => 'required|min:5|max:255',
+            'password_confirmation' =>'required|min:5|max:255|same:password'
         ]);
         $user->update([
             'password' => Hash::make($attributes['password'])
