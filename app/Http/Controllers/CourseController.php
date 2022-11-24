@@ -18,7 +18,7 @@ class CourseController extends Controller
         $levels=Level::get();
        if ($request['search'])
        {
-            $courses= Course::search($request['search']);    
+            $courses= Course::search($request['search'])->visible()->get();    
        }
        elseif ($request['category'])
        {
@@ -26,19 +26,19 @@ class CourseController extends Controller
        }
        elseif ($request['level'])
        {
-            $courses= Course::levelfind($request['level']);
+            $courses= Course::levelfind($request['level'])->get();
        }
        elseif ($request['order'])
        {
-            $courses= Course::sort($request['order']);
+            $courses= Course::sort($request['order'])->visible()->get();
        }
        elseif ($request['sort'])
        {
-            $courses = Course::categorygroup($request['sort']);
+            $courses = Course::categorygroup($request['sort'])->visible()->get();
        }
        else
        {
-            $courses=Course::visible(Auth::id());
+            $courses=Course::visible()->get();     
        }
 
         return view('course.index', compact('courses', 'categories', 'levels'));
@@ -96,7 +96,7 @@ class CourseController extends Controller
 
     public function edit(Course $course)
     {
-        $categories=Category::visible()->active();
+        $categories=Category::visible()->active()->get();
         $levels= Level::get();
 
         return view('course.edit', compact('categories', 'levels', 'course'));

@@ -5,6 +5,7 @@ namespace App\Models;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Course extends Model
 {
@@ -46,7 +47,7 @@ class Course extends Model
     public function scopeSearch($query, $search)
     {
         return $query->where('title', 'LIKE', '%' . $search . '%')
-            ->orwhere('description', 'LIKE', '%' . $search . '%')->get();
+            ->orwhere('description', 'LIKE', '%' . $search . '%');
     }
 
     public function scopeFilter($query, $category)
@@ -57,7 +58,8 @@ class Course extends Model
     public function scopeLevelfind($query, $level)
     {
 
-        return $query->where('level_id', $level)->get();
+        return $query->where('level_id', $level)
+                ->where('user_id',Auth::id());
     }
     public function scopeSort($query, $order)
     {
@@ -65,12 +67,12 @@ class Course extends Model
         if ($order == 'asc') 
         {
 
-            return $query->orderby('title', 'asc')->get();
+            return $query->orderby('title', 'asc');
         } 
         elseif ($order == 'new') 
         {
 
-            return $query->orderby('created_at', 'desc')->get();
+            return $query->orderby('created_at', 'desc');
         } 
         else
         {
@@ -81,12 +83,13 @@ class Course extends Model
     public function scopeCategorygroup($query, $order)
     {
 
-        return $query->where('category_id', $order)->get();
+        return $query->where('category_id', $order);
     }
-    public function scopeVisible($query,$user)
+    public function scopeVisible($query)
     {
-        return $query->where('user_id',$user)->get();
+        return $query->where('user_id',Auth::id());
     }
+   
     public function status()
     {
 

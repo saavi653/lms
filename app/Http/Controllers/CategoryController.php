@@ -12,11 +12,11 @@ class CategoryController extends Controller
     { 
         if ($request['search'])
         {
-            $categories=Category::Search($request['search']);
+            $categories=Category::Search($request['search'])->visible()->get();
         }
         elseif ($request['sort'])
         {
-            $categories = Category::Sort()->get();
+            $categories = Category::Sort()->visible()->get();
         }
         else
         {

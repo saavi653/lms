@@ -6,7 +6,6 @@ use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Notifications\SetPasswordNotification;
-use Attribute;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\Rule;
@@ -17,17 +16,15 @@ class UserController extends Controller
 
     if($request['search'])
     {
-        $users=User::Search($request['search']);
+        $users=User::Search($request['search'])->visible()->get(); 
     }
     elseif($request['sort'])
     {
-       
-        $users=User::Sort()->get();
-      
+        $users=User::Sort()->visible()->get();
     }
     elseif($request['role'])
     {
-        $users=User::group($request['role'])->get();
+        $users=User::group($request['role'])->visible()->get();
     }
     else
     {
@@ -53,7 +50,7 @@ class UserController extends Controller
                 'last_name'=>'required|min:3|max:255',
                 'email'=>'email|required',
                 'gender' => 'required',
-                'phone' => 'required|numeric|max:10',
+                'phone' => 'required|digits:10',
                 'role_id' => ['required',
                 Rule::in($roles) ]        
             ] );
@@ -99,7 +96,7 @@ class UserController extends Controller
             'first_name'=>'required|min:3',
             'last_name' =>'required|min:3',
             'email'=>'email|min:3|max:255|required',
-            'phone' => 'required|numeric|between:9,11'
+            'phone' => 'required|digits:10'
         ] );
        $user->update($data);
 

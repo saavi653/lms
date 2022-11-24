@@ -11,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Relations\Concerns\SupportsDefaultModels;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -47,9 +48,12 @@ class User extends Authenticatable
     }
     public function scopeSearch($query,$search)
     {
-       
-       return $query->where('first_name','LIKE','%'.$search.'%')
-       ->orwhere('email','LIKE','%'.$search.'%')->get();
+         return $query->where('first_name','LIKE','%'.$search.'%')
+            ->orwhere('email','LIKE','%'.$search.'%');
+    }
+    public function scopeVisible($query)
+    {
+        return $query->where('created_by',Auth::id());
     }
     
     public function scopeSort($query)
