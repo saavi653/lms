@@ -3,7 +3,7 @@
   <h3 class="head1">Users</h3>
   <form action="" method="get">
     <div class="d-flex search">
-      <input class="form-control" type="text" name="search" placeholder="Search by Name and Email" >
+      <input class="form-control" type="text" name="search" placeholder="Search by Name and Email" value="" >
       <i class="bi bi-search"></i>
     </div>
   </form>

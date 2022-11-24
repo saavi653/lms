@@ -16,33 +16,17 @@ class CourseController extends Controller
     {
         $categories=Category::visible()->active()->get();
         $levels=Level::get();
-       if ($request['search'])
-       {
-            $courses= Course::search($request['search'])->visible()->get();    
-       }
-       elseif ($request['category'])
-       {
-            $courses= Course::filter($request['category']);
-       }
-       elseif ($request['level'])
-       {
-            $courses= Course::levelfind($request['level'])->get();
-       }
-       elseif ($request['order'])
-       {
-            $courses= Course::sort($request['order'])->visible()->get();
-       }
-       elseif ($request['sort'])
-       {
-            $courses = Course::categorygroup($request['sort'])->visible()->get();
-       }
-       else
-       {
-            $courses=Course::visible()->get();
-            
-       }
-
+         $courses=Course::Search(request([
+            'search',
+            'category',
+            'level',
+            'order',
+            'sort',
+    
+        ]));
+  
         return view('course.index', compact('courses', 'categories', 'levels'));
+
     }   
 
     public function create()

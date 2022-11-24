@@ -46,26 +46,33 @@ class User extends Authenticatable
             ]
         ];
     }
-    public function scopeSearch($query,$search)
+  
+    public function scopeSearch($query,array $value)
     {
-         return $query->where('first_name','LIKE','%'.$search.'%')
-            ->orwhere('email','LIKE','%'.$search.'%');
+        
+       if($value==null)
+       {
+        return $query ;
+       }
+        elseif(isset($value['sort']))
+        {
+            return $query->orderby('created_at','desc');  
+        }
+        elseif(isset($value['role']))
+        {
+            return $query->where('role_id',$value['role']);
+        }
+        elseif(isset($value['search']))
+        {
+            return $query->where('first_name','LIKE','%'.$value['search'].'%')
+                ->orwhere('email','LIKE','%'.$value['search'].'%');             
+        }
+        
     }
+
     public function scopeVisible($query)
     {
         return $query->where('created_by',Auth::id());
-    }
-    
-    public function scopeSort($query)
-    {
-
-        return $query->orderby('created_at','desc');  
-    }
-
-    public function scopeGroup($query,$role)
-    {
-
-        return $query->where('role_id',$role);
     }
 
     public function getFullNameAttribute()

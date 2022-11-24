@@ -10,19 +10,13 @@ class CategoryController extends Controller
 {
     public function index(Request $request)
     { 
-        if ($request['search'])
-        {
-            $categories=Category::Search($request['search'])->visible()->get();
-        }
-        elseif ($request['sort'])
-        {
-            $categories = Category::Sort()->visible()->get();
-        }
-        else
-        {
-            $categories =Category::where('created_by',Auth::id())->get();
-        }
-
+        $categories=Category::Search(request([
+            'search',
+            'sort'
+        
+        ]));
+        $categories = $categories->visible()->get();
+    
         return view('category.index', ['categories'=>$categories]);  
     }
     public function create()
@@ -42,6 +36,7 @@ class CategoryController extends Controller
             ];
             
             $restore=Category::where('name',$request->name)->withTrashed()->First();
+            // dd($restore->deleted_at);
             if($restore!=null)
             {
                 if($restore->deleted_at)
@@ -60,7 +55,7 @@ class CategoryController extends Controller
     {
         return view('category.edit', [
             'category' => $category
-            ] );
+            ]);
     } 
     public function update(Request $request, Category $category){
         $data=$request->validate(

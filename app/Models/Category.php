@@ -29,9 +29,22 @@ class Category extends Model
       
         return $this->belongsTo(User::class,'created_by');
     }
-    public function scopeSearch($query,$search){
-
-        return $query->where('name','like','%'.$search.'%');
+   
+    public function scopeSearch($query,array $value)
+    {
+        
+       if($value==null)
+       {
+        return $query ;
+       }
+        elseif(isset($value['sort']))
+        {
+            return $query->orderby('created_at','desc');  
+        }
+        elseif(isset($value['search']))
+        {
+            return $query->where('name','like','%'.$value['search'].'%');          
+        }
         
     }
     public function getNameAttribute($value)
@@ -39,12 +52,7 @@ class Category extends Model
         
         return $this->attributes['name'] = ucfirst($value);
     }
-    public function scopeSort($query)
-    {
 
-        return $query->orderby('created_at','desc');
-        
-    }
     public function scopeVisible($query)
     {
 

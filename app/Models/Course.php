@@ -44,47 +44,7 @@ class Course extends Model
     {
         return $this->belongsTo(Category::class);
     }
-    public function scopeSearch($query, $search)
-    {
-        return $query->where('title', 'LIKE', '%' . $search . '%')
-            ->orwhere('description', 'LIKE', '%' . $search . '%');
-    }
-
-    public function scopeFilter($query, $category)
-    {
-
-        return $query->where('category_id', $category)->get();
-    }
-    public function scopeLevelfind($query, $level)
-    {
-
-        return $query->where('level_id', $level)
-                ->where('user_id',Auth::id());
-    }
-    public function scopeSort($query, $order)
-    {
-
-        if ($order == 'asc') 
-        {
-
-            return $query->orderby('title', 'asc');
-        } 
-        elseif ($order == 'new') 
-        {
-
-            return $query->orderby('created_at', 'desc');
-        } 
-        else
-        {
-
-            return $query->orderby('title', 'desc')->get();
-        }
-    }
-    public function scopeCategorygroup($query, $order)
-    {
-
-        return $query->where('category_id', $order);
-    }
+    
     public function scopeVisible($query)
     {
         return $query->where('user_id',Auth::id());
@@ -99,5 +59,52 @@ class Course extends Model
     {
 
         return $this->belongsTo(Level::class);
+    }
+    public function scopeSearch($query,array $value)
+    {
+        
+       if($value==null)
+       {
+        return $query->visible()->get() ;
+       }
+        elseif(isset($value['order']))
+        {
+            if ($value['order'] == 'asc') 
+            {
+                 return $query->orderby('title', 'asc')
+                    ->visible()->get();
+            } 
+            elseif ($value['order'] == 'new') 
+            {
+             return $query->orderby('created_at', 'desc')
+                ->visible()->get();
+            } 
+            else
+            {
+                return $query->orderby('title', 'desc')
+                    ->visible()->get();
+            }  
+        }
+        elseif(isset($value['category']))
+        {
+            return $query->where('category_id', $value['category'])->get();
+        }
+        elseif(isset($value['search']))
+        {
+            return $query->where('title','LIKE','%'.$value['search'].'%')
+                ->orwhere('description','LIKE','%'.$value['search'].'%')
+                    ->visible()->get();             
+        }
+        elseif(isset($value['level']))
+        {
+            return $query->where('level_id', $value['level'])
+            ->Visible()->get();
+        }
+        elseif(isset($value['sort']))
+        {
+            return $query->where('category_id', $value['sort'])
+                ->visible()->get();
+        }   
+        
     }
 }

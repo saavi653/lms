@@ -12,28 +12,19 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
-   public function index(Request $request) {
+   public function index() 
+   {
+        $users=User::Search(request([
+            'search',
+            'sort',
+            'role'
+        
+        ]));
+        $users = $users->visible()->get();
+        $roles = Role::where('slug','!=','admin')->get(); 
 
-    if($request['search'])
-    {
-        $users=User::Search($request['search'])->visible()->get(); 
-    }
-    elseif($request['sort'])
-    {
-        $users=User::Sort()->visible()->get();
-    }
-    elseif($request['role'])
-    {
-        $users=User::group($request['role'])->visible()->get();
-    }
-    else
-    {
-        $users=User::where('created_by',Auth::id())->get();
-    }
-    $roles = Role::where('slug','!=','admin')->get(); 
-
-    return view('user.index',['users'=>$users,'roles'=>$roles]);
-   }
+        return view('user.index',['users'=>$users,'roles'=>$roles]);
+}
 
    public function create() {
     $roles = Role::where('slug','!=','admin')->get();
