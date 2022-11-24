@@ -40,11 +40,21 @@ class CategoryController extends Controller
             $attributes += [
                 'created_by' => Auth::id()
             ];
-           
-        Category::create($attributes);
+            
+            $restore=Category::where('name',$request->name)->withTrashed()->First();
+            if($restore!=null)
+            {
+                if($restore->deleted_at)
+                {
+                    $restore->restore();
+                    return redirect()->route('categories.index')
+                        ->with('success','category restored successfully');
+                }
+            }
+            Category::create($attributes);
 
-        return redirect()->route('categories.index')
-            ->with('success','category created successfully');
+            return redirect()->route('categories.index')
+                ->with('success','category created successfully');
     }
     public function edit(Category $category)
     {

@@ -25,7 +25,7 @@ return new class extends Migration
             $table->double('phone');
             $table->string('password')->nullable();
             $table->string('image')->nullable();
-            $table->boolean('email_status')->default(1);
+            $table->boolean('email_status')->default(0);
             $table->boolean('status')->default(0);
             $table->timestamps();
             $table->softDeletes();

@@ -24,7 +24,7 @@ return new class extends Migration
             $table->softDeletes();
            
         });
-    }    
+    }
 
     /**
      * Reverse the migrations.
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('categories');
     }
 };

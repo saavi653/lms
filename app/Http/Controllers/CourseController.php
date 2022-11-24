@@ -38,7 +38,8 @@ class CourseController extends Controller
        }
        else
        {
-            $courses=Course::visible()->get();     
+            $courses=Course::visible()->get();
+            
        }
 
         return view('course.index', compact('courses', 'categories', 'levels'));
@@ -59,10 +60,12 @@ class CourseController extends Controller
         $attributes = $request->validate([
             'title' => 'required|min:3|max:255',
             'description' => 'required|min:3',
-            'level_id' => 'required',
+            'level_id' => ['required',
+            Rule::in(Level::level())],
             'category_id' => ['required',
             Rule::in($categories)
-            ]  
+            ] 
+
         ]);
       
         $attributes +=[
@@ -109,7 +112,8 @@ class CourseController extends Controller
 
             'title' => 'required|min:3|max:255',
             'description' => 'required|min:3',
-            'level_id' => 'required',
+            'level_id' => ['required',
+                 Rule::in(Level::level())],
             'category_id' => ['required',
                 Rule::in($categories)
             ],

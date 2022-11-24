@@ -24,7 +24,10 @@
         @endif >
         {{ $category->name }}</option> 
         @endforeach
-    </select>   
+    </select>  
+    @error('category_id')
+    {{ $message }} 
+    @enderror  
     <div class="bold">What Is The Level of Course?</div>
     <select class="input" name="level_id" required >
         @foreach($levels as $level)
@@ -33,7 +36,10 @@
         @endif >
         {{ $level->name }}</option> 
         @endforeach
-    </select>    
+    </select> 
+    @error('level_id')
+    {{ $message }} 
+    @enderror    
    <div class="bold" >
     <input type="checkbox" name="certificate" value="certificate" @if($course->certificate) checked
     @endif >

@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('courses', function (Blueprint $table) {
+         Schema::create('courses', function (Blueprint $table) {
             $table->id();
             $table->string('slug');
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('category_id')->constrained();
+            $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->string('title');
             $table->text('description');
             $table->foreignId('level_id')->constrained();
@@ -25,6 +25,7 @@ return new class extends Migration
             $table->boolean('certificate')->default(0);
             $table->timestamps();
         });
+       
     }
 
     /**

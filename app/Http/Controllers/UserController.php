@@ -63,7 +63,7 @@ class UserController extends Controller
                 if($restore->deleted_at)
                 {
                     $restore->restore();
-                    return redirect()->route('user')->with('success','user restored successfully');
+                    return redirect()->route('users.index')->with('success','user restored successfully');
                 }
             }
             else
