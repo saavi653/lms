@@ -20,20 +20,23 @@ class UserController extends Controller
             'role'
         
         ]));
-        $users = $users->visible()->get();
-        $roles = Role::where('slug','!=','admin')->get(); 
+        $users = $users->visibleTo(Auth::user())->get();
+        $roles=Role::role();
 
-        return view('user.index',['users'=>$users,'roles'=>$roles]);
+        return view('user.index', [
+            'users' => $users,
+            'roles' => $roles
+            ]);
 }
 
    public function create() {
-    $roles = Role::where('slug','!=','admin')->get();
+    $roles = Role::role();
     return view('user.create',['roles'=>$roles]);
    }
 
    public function store(Request $request) {
     
-       $roles = Role::where('slug','!=','admin')->get();
+       $roles = Role::role();
        $roles=$roles->pluck('id');
         $attributes= $request->validate(
             [
@@ -75,7 +78,7 @@ class UserController extends Controller
    }
 
    public function edit(User $user) {
-    $roles = Role::where('slug','!=','admin')->get();
+    $roles = Role::role();
 
     return view('user.edit',['user'=>$user,'roles'=> $roles]);
    }

@@ -14,7 +14,7 @@ class CourseController extends Controller
     
     public function index(Request $request)
     {
-        $categories=Category::visible()->active()->get();
+        $categories=Category::visibleto()->active()->get();
         $levels=Level::get();
          $courses=Course::Search(request([
             'search',
@@ -31,7 +31,7 @@ class CourseController extends Controller
 
     public function create()
     {
-        $categories=Category::visible()->active()->get();
+        $categories=Category::visibleto()->active()->get();
         $levels= Level::get();
 
         return view('course.create',compact('categories', 'levels'));
@@ -39,7 +39,7 @@ class CourseController extends Controller
 
     public function store(Request $request)
     {
-        $categories=Category::visible()->active()->pluck('id')->toArray();
+        $categories=Category::visibleto()->active()->pluck('id')->toArray();
     
         $attributes = $request->validate([
             'title' => 'required|min:3|max:255',
@@ -83,7 +83,7 @@ class CourseController extends Controller
 
     public function edit(Course $course)
     {
-        $categories=Category::visible()->active()->get();
+        $categories=Category::visibleto()->active()->get();
         $levels= Level::get();
 
         return view('course.edit', compact('categories', 'levels', 'course'));
@@ -91,7 +91,7 @@ class CourseController extends Controller
 
     public function update(Course $course, Request $request){
 
-        $categories=Category::visible()->active()->pluck('id')->toArray();
+        $categories=Category::visibleto()->active()->pluck('id')->toArray();
         $attributes = $request->validate([
 
             'title' => 'required|min:3|max:255',

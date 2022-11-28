@@ -24,6 +24,8 @@
     <ul class="dropdown-menu">
       <li><a class="dropdown-item " href="{{ route('users.index')}}?sort=new">Newest</a></li>
       <li><a class="dropdown-item " href="{{ route('users.index') }}">Oldest</a></li>
+      <li><a class="dropdown-item " href="{{ route('users.index')}}?sort=asc">A-Z</a></li>
+      <li><a class="dropdown-item " href="{{ route('users.index')}}?sort=desc">Z-A</a></li>      
     </ul>
   </div>
 <div class="dropdown drop d8">
@@ -85,7 +87,7 @@
         </button>
         <ul class="dropdown-menu">
           <li><a class="dropdown-item" href="{{ route('users.edit',$user) }}">edit</a></li>
-          <li><a class="dropdown-item"></a>
+          <li><a class="dropdown-item" href="{{ route('enrolledCourse.index',$user) }}">courses</a></li>
             <form action="{{ route('users.delete',$user) }}" method="post">
               @method('DELETE')
               @csrf

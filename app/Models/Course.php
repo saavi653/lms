@@ -32,6 +32,15 @@ class Course extends Model
         'user_id',
         'status_id'
     ];
+  
+    public function enrollments()
+    {
+        return $this->belongsToMany(User::class)
+            ->withPivot('user_id')
+            ->withTimestamps()
+            ->using(CourseUser::class);
+
+    }
     public function units()
     {
         return $this->belongsToMany(Unit::class, 'course_units');
@@ -40,12 +49,13 @@ class Course extends Model
     {
         return $this->belongsTo(User::class);
     }
+   
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
     
-    public function scopeVisible($query)
+    public function scopeVisibleTo($query)
     {
         return $query->where('user_id',Auth::id());
     }
@@ -60,29 +70,31 @@ class Course extends Model
 
         return $this->belongsTo(Level::class);
     }
+
+   
     public function scopeSearch($query,array $value)
     {
         
        if($value==null)
        {
-        return $query->visible()->get() ;
+        return $query->visibleto()->get() ;
        }
         elseif(isset($value['order']))
         {
             if ($value['order'] == 'asc') 
             {
                  return $query->orderby('title', 'asc')
-                    ->visible()->get();
+                    ->VisibleTo()->get();
             } 
             elseif ($value['order'] == 'new') 
             {
              return $query->orderby('created_at', 'desc')
-                ->visible()->get();
+                ->visibleto()->get();
             } 
             else
             {
                 return $query->orderby('title', 'desc')
-                    ->visible()->get();
+                    ->visibleto()->get();
             }  
         }
         elseif(isset($value['category']))
@@ -93,17 +105,17 @@ class Course extends Model
         {
             return $query->where('title','LIKE','%'.$value['search'].'%')
                 ->orwhere('description','LIKE','%'.$value['search'].'%')
-                    ->visible()->get();             
+                    ->visibleto()->get();             
         }
         elseif(isset($value['level']))
         {
             return $query->where('level_id', $value['level'])
-            ->Visible()->get();
+            ->Visibleto()->get();
         }
         elseif(isset($value['sort']))
         {
             return $query->where('category_id', $value['sort'])
-                ->visible()->get();
+                ->visibleto()->get();
         }   
         
     }

@@ -39,7 +39,18 @@ class Category extends Model
        }
         elseif(isset($value['sort']))
         {
-            return $query->orderby('created_at','desc');  
+            if($value['sort']=='new')
+            {
+                return $query->orderby('created_at','desc');
+            }
+            elseif($value['sort']=='asc')
+            {
+               return $query->orderby('name', 'asc');
+            }
+            else
+            {
+               return $query->orderby('name', 'desc');
+            }       
         }
         elseif(isset($value['search']))
         {
@@ -53,7 +64,7 @@ class Category extends Model
         return $this->attributes['name'] = ucfirst($value);
     }
 
-    public function scopeVisible($query)
+    public function scopeVisibleto($query)
     {
 
         return $query->where('created_by',Auth::id());

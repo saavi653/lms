@@ -12,4 +12,8 @@ class Role extends Model
     CONST SUB_ADMIN=2;
     CONST TRAINER=3;
     CONST EMPLOYEE=4;
+    public function scopeRole($query)
+    {
+        return $query->where('id','!=',self::ADMIN)->get();
+    }
 }

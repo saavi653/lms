@@ -4,7 +4,9 @@ use App\Http\Controllers\Auth\MyWelcomeController;
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\CourseEnrollmentController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EnrollController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\ResetpasswordController;
@@ -115,6 +117,17 @@ Route::controller(UnitController::class)->group(function () {
     Route::delete('/courses/units/{unit:slug}/delete','delete')->name('units.delete');
 
 });
+
+Route::get('courses/{course:slug}/enrolled', [EnrollController::class,'index'])->name('enrolled.index');
+Route::post('courses/{course}/enrolled', [EnrollController::class,'store'])->name('enrolled.store');
+Route::delete('courses/{course}/users/{user}/delete', [EnrollController::class,'delete'])->name('enrolled.delete');
+
+
+Route::get('users/{user:slug}/enrolled', [CourseEnrollmentController::class,'index'])->name('enrolledCourse.index');
+Route::post('users/{user}/enrolled', [CourseEnrollmentController::class,'store'])->name('enrolledCourse.store');
+Route::delete('courses/{course}/users/{user}/destroy', [CourseEnrollmentController::class,'delete'])->name('enrolledCourse.delete');
+
+
 Route::get('/dashboard',[DashboardController::class,'dashboard'])->name('dashboard.index');
 
 Route::get('/employee',[DashboardController::class,'employee'])->name('employee');

@@ -229,6 +229,11 @@ img{
     left:304px;
     margin:10px;
 }
+.item3{
+    position:relative;
+    top: -1131px;
+    left: 1108px;
+}
 .itm{
     background-color: white;
     color:black;
@@ -335,6 +340,9 @@ img{
     padding:10px;
     
 }
+.enroll{
+    display: flex;
+}
 .dot{
     position:relative;
     left:292px;
@@ -381,6 +389,16 @@ img{
     right: -260px;
     bottom: 667px;
 }
+.container6{
+   width:50%;
+   height:550px;
+   border:2px solid black;
+   position:relative;
+   bottom: 590px;
+   left: 316px;
+}
+
+
 .edit{
     position: relative;
     right:-662px;

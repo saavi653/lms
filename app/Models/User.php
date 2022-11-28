@@ -46,60 +46,6 @@ class User extends Authenticatable
             ]
         ];
     }
-  
-    public function scopeSearch($query,array $value)
-    {
-        
-       if($value==null)
-       {
-        return $query ;
-       }
-        elseif(isset($value['sort']))
-        {
-            return $query->orderby('created_at','desc');  
-        }
-        elseif(isset($value['role']))
-        {
-            return $query->where('role_id',$value['role']);
-        }
-        elseif(isset($value['search']))
-        {
-            return $query->where('first_name','LIKE','%'.$value['search'].'%')
-                ->orwhere('email','LIKE','%'.$value['search'].'%');             
-        }
-        
-    }
-
-    public function scopeVisible($query)
-    {
-        return $query->where('created_by',Auth::id());
-    }
-
-    public function getFullNameAttribute()
-    {
-
-        return ucfirst($this->first_name)." ".ucfirst($this->last_name);
-    }
-    public function getIsAdminAttribute()
-    {
-
-        return $this->role_id==Role::ADMIN;
-    }
-    public function getIsEmployeeAttribute()
-    {
-    
-        return $this->role_id==Role::EMPLOYEE;
-    }
-    public function getIsTrainerAttribute()
-    {
-    
-        return $this->role_id==Role::TRAINER;
-    }
-    public function role()
-    {
-   
-        return $this->belongsTo(Role::class,);
-    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -119,4 +65,98 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // Scope's
+    public function scopeEmployee($query)
+    {
+        return $query->where('role_id', Role::EMPLOYEE);
+    }
+
+    public function scopeActive($query) 
+    {
+        return $query->where('status', true);
+    }
+
+    public function scopeVisibleTo($query)
+    {
+        return $query->where('created_by', Auth::id());
+    }
+
+    public function scopeSearch($query,array $value)
+    {
+        
+       if ($value==null)
+       {
+            return $query ;
+       }
+        elseif (isset($value['sort']))
+        {
+            if ($value['sort']=='new')
+            {
+                return $query->orderby('created_at', 'desc');  
+            }
+            elseif ($value['sort']=='asc')
+            {
+                return $query->orderby('first_name', 'asc');
+            }
+            else
+            {
+                return $query->orderby('first_name', 'desc');
+            }    
+        }
+        elseif (isset($value['role']))
+        {
+            return $query->where('role_id',$value['role']);
+        }
+        elseif (isset($value['search']))
+        {
+            return $query->where('first_name','LIKE','%'.$value['search'].'%')
+                ->orwhere('email','LIKE','%'.$value['search'].'%');             
+        }
+        
+    }
+
+    // Relationship's
+
+    // a user can create multiple course's.
+    public function courses() 
+    {
+        return $this->hasMany(Course::class);
+    }
+
+    public function enrollments()
+    {
+        return $this->belongsToMany(Course::class)
+            ->withPivot('id')
+            ->withTimestamps()
+            ->using(CourseUser::class);
+    }
+
+
+    // Attribute's
+
+    public function getFullNameAttribute()
+    {
+        return ucfirst($this->first_name)." ".ucfirst($this->last_name);
+    }
+
+    public function getIsAdminAttribute()
+    {
+        return $this->role_id==Role::ADMIN;
+    }
+
+    public function getIsEmployeeAttribute()
+    {
+        return $this->role_id==Role::EMPLOYEE;
+    }
+
+    public function getIsTrainerAttribute()
+    {
+        return $this->role_id==Role::TRAINER;
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class,);
+    }
 }

@@ -1,5 +1,6 @@
 @include('dashboard')
 @include('navbar')
+
 <div class="out">
 
     <h3>courses</h3>
@@ -53,8 +54,8 @@
             </ul>
         </div> 
     </div>
-    @foreach($courses as $course)
     
+    @foreach($courses as $course)
     <div class="conn">
         <div class="pic"> 
         </div>
@@ -70,7 +71,7 @@
         <i class="bi bi-three-dots-vertical "></i></button>
         <ul class="dropdown-menu">
           <li><a class="dropdown-item" href="{{ route('courses.edit',$course)}}">Edit Course</a></li>
-          <li><a class="dropdown-item" href="{{ route('courses.index')}}">Users</a></li>
+          <li><a class="dropdown-item" href="{{ route('enrolled.index',$course)}}">Users</a></li>
           @if($course->status_id!=1)
           <li><a class="dropdown-item" href="{{ route('courses.status',$course) }}?status=publish">Publish</a></li>
           @endif

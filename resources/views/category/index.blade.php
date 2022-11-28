@@ -24,6 +24,8 @@
     <ul class="dropdown-menu">
       <li><a class="dropdown-item " href="{{ route('categories.index') }}?sort=new">Newest</a></li>
       <li><a class="dropdown-item " href="{{ route('categories.index') }}">Oldest</a></li>
+      <li><a class="dropdown-item " href="{{ route('categories.index') }}?sort=asc">A-Z</a></li>
+      <li><a class="dropdown-item " href="{{ route('categories.index') }}?sort=desc">Z-A</a></li>
     </ul>
   </div>
   
