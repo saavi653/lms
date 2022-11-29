@@ -26,7 +26,7 @@
             <h4>enrolled courses</h4>
             @foreach($enrolledCourses as $enrolledCourse) 
                 {{ $enrolledCourse->title }}
-                <form action="{{ route('enrolledCourse.delete', ['course'=> $enrolledCourse->id,'user' => $user])}}" method="POSt">
+                <form action="{{ route('enrolledCourse.delete', ['course'=> $enrolledCourse->id,'user' => $user]) }}" method="POST">
                 @csrf
                 @method('DELETE')
               <input type="submit" name="submit" value="UnAssign" class="btn btn-danger">

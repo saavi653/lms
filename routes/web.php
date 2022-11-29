@@ -33,7 +33,7 @@ Route::get('/',function(){
     if(Auth::check()) {
         if(Auth::user()->isemployee)
         {
-            return redirect()->route('employee.courses');
+            return redirect()->route('learner.index');
         }
         return redirect()->route('dashboard.index');
     }
@@ -132,9 +132,8 @@ Route::delete('courses/{course}/users/{user}/destroy', [CourseEnrollmentControll
 Route::get('/dashboard',[DashboardController::class,'dashboard'])->name('dashboard.index');
 Route::get('overview',[DashboardController::class,'overview'])->name('overview.index');
 
-// Route::get('/employee',[DashboardController::class,'employee'])->name('employee');
 
-Route::get('/employee',[EmploymentController::class,'index'])->name('employee.courses');
+Route::get('/employee',[EmploymentController::class,'index'])->name('learner.index');
 });
 
 

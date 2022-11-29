@@ -21,7 +21,7 @@ class EnrollController extends Controller
             })
             ->get();
 
-        return view('employee.index', [
+        return view('learner.show', [
             'users' => $users,
             'enrolledUsers' => $course->enrollments()->get(),
             'course' => $course
@@ -29,11 +29,24 @@ class EnrollController extends Controller
     }
     public function store(Course $course,Request $request)
     {
-        $user_id = $request->validate([
-
-        'user_id' => 'required'
+       
+        $attribute = $request->validate([
+            'user_id' => [
+                'required',
+                'array',
+                Rule::in(User::VisibleTo(Auth::user())
+                    ->whereDoesntHave('enrollments', function(Builder $query) use($course) {
+                        $query->where('course_id', $course->id);
+                    })
+                    ->active()
+                    ->employee()
+                    ->get()
+                    ->pluck('id')
+                    ->toArray()
+                )
+            ]
         ]);
-        $course->enrollments()->attach($user_id['user_id']);
+        $course->enrollments()->attach($attribute['user_id']);
 
         return back()->with('success','user enrolled succesfully');;
     }

@@ -28,6 +28,7 @@ class CourseEnrollmentController extends Controller
     }
     public function store(User $user,Request $request )
     {    
+      
         $attribute = $request->validate([
             'course_id' => [
                 'required',
@@ -44,7 +45,7 @@ class CourseEnrollmentController extends Controller
         ]);
 
         $user->enrollments()->attach($attribute['course_id']);
-
+       
         return back()->with('success','course enrolled succesfully');;
     }
     public function delete(Course $course,User $user)
