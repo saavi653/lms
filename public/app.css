@@ -70,10 +70,14 @@
 .error{
     color: red;
 }
+.page{
+    width:10%;
+    height:10px;
+}
 .dashboard
 {
     background-color:rgb(16,55,92);
-    width:20%;
+    width:19%;
     height:670px;
     /* border:2px solid black; */
     line-height:50px;

@@ -15,7 +15,7 @@ class CategoryController extends Controller
             'sort'
         
         ]));
-        $categories = $categories->visible()->get();
+        $categories = $categories->visibleto()->simplepaginate(5);
     
         return view('category.index', ['categories'=>$categories]);  
     }

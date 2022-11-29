@@ -4,7 +4,7 @@
 <span class="head3"><h4><a href="{{ route('courses.index') }}">Courses</a> > Add Courses</h4></span>
 </div>
 <div class="container1">
-    <form method="POST" action="{{ route('courses.store') }}">
+    <form method="POST" action="{{ route('courses.store') }}" enctype="multipart/form-data">
         @csrf
     <div class="bold"><label >What Will Be The Course Name ?</label></div>
    <input type="text" name="title" placeholder="Enter Course Name" required class="input" value="{{ old('title')}}">
@@ -37,9 +37,11 @@
    <div class="bold" >
     <input type="checkbox" name="certificate">
     <label>Certificate</label>
+   {{--<input type="file" name="image_path">--}} 
     <div class="bold"><input type="submit" name="save" value="Save" class="btn btn-secondary">
     <input type="submit" name="save&add" value="Save & Add Another" class="btn btn-secondary">
     <a href="{{ route('courses.index') }}" class="btn btn-light btn10">cancel</a></div>
    </div>
 </div>
 </div>
+

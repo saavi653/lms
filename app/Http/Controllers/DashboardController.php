@@ -14,8 +14,5 @@ class DashboardController extends Controller
     {
         return view ('overview');
     }
-    public function employee(){
-
-        return view('employee');
-    }
+   
 }

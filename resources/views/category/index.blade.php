@@ -94,6 +94,9 @@
     </td>
   </tr>
   @endforeach
+  {{ $categories->links() }}
+</table>
+<div class="page">
+</div>
   </body>
-
   </html>

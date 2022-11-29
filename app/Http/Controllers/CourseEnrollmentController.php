@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\User;
+use Illuminate\Contracts\Validation\Rule as ValidationRule;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,17 +27,20 @@ class CourseEnrollmentController extends Controller
         ]);
     }
     public function store(User $user,Request $request )
-    {
-        // $courses = Course::VisibleTo(Auth::user())
-        // ->whereDoesntHave('enrollments', function(Builder $query) use($user) {
-        //     $query->where('user_id',$user->id);
-        // })
-        // ->get();
-        // $course_id = $courses->pluck('id')->toArray();
-    
-        $attribute = $request->validate(
-        [
-            'course_id' => 'required'  
+    {    
+        $attribute = $request->validate([
+            'course_id' => [
+                'required',
+                'array',
+                Rule::in(Course::VisibleTo(Auth::user())
+                    ->whereDoesntHave('enrollments', function(Builder $query) use($user) {
+                        $query->where('user_id', $user->id);
+                    })
+                    ->get()
+                    ->pluck('id')
+                    ->toArray()
+                )
+            ]
         ]);
 
         $user->enrollments()->attach($attribute['course_id']);

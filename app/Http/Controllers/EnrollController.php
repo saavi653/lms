@@ -31,7 +31,7 @@ class EnrollController extends Controller
     {
         $user_id = $request->validate([
 
-        'user_id' => 'required' 
+        'user_id' => 'required'
         ]);
         $course->enrollments()->attach($user_id['user_id']);
 

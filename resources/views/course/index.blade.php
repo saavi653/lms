@@ -57,8 +57,10 @@
     
     @foreach($courses as $course)
     <div class="conn">
-        <div class="pic"> 
+        <div class="pic">
+        {{-- <img src = "{{ asset('storage/'.$course->image->image_path) }}" /> --}}
         </div>
+
         <div class="des1 des"><a href="{{ route('courses.index') }}?sort={{ $course->category->id}}">{{ $course->category->name }}</a></div>
       <a href="{{ route('courses.show',$course) }}" ><div class="title1">{{ $course->title }}</a>
       <div class="des">Created By :{{ $course->user->fullname }}| Created On:{{ $course->created_at }}</div>
@@ -84,5 +86,9 @@
         </ul>
     </div>
     @endforeach  
-    
-</div>
+    {{ $courses->links() }}
+    </div>
+</body>
+</html>
+   
+

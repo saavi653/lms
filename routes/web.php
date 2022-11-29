@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseEnrollmentController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EmploymentController;
 use App\Http\Controllers\EnrollController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
@@ -32,7 +33,7 @@ Route::get('/',function(){
     if(Auth::check()) {
         if(Auth::user()->isemployee)
         {
-            return redirect()->route('employee');
+            return redirect()->route('employee.courses');
         }
         return redirect()->route('dashboard.index');
     }
@@ -129,12 +130,13 @@ Route::delete('courses/{course}/users/{user}/destroy', [CourseEnrollmentControll
 
 
 Route::get('/dashboard',[DashboardController::class,'dashboard'])->name('dashboard.index');
-
-Route::get('/employee',[DashboardController::class,'employee'])->name('employee');
-
 Route::get('overview',[DashboardController::class,'overview'])->name('overview.index');
 
+// Route::get('/employee',[DashboardController::class,'employee'])->name('employee');
+
+Route::get('/employee',[EmploymentController::class,'index'])->name('employee.courses');
 });
+
 
 // welcome WelcomeNotification
 

@@ -13,9 +13,6 @@
             <ul class="dropdown-menu"> 
             @foreach($courses as $course) 
             <li><input type="checkbox"  name="course_id[]" value="{{ $course->id }}">
-            @error('course_id')
-            {{ $message }}
-            @enderror 
             <label>{{ $course->title }}</label>
             @endforeach
            <li>
@@ -23,6 +20,9 @@
             </li> 
             </div>
             </form>
+            @error('course_id')
+            {{ $message }}
+            @enderror 
             <h4>enrolled courses</h4>
             @foreach($enrolledCourses as $enrolledCourse) 
                 {{ $enrolledCourse->title }}

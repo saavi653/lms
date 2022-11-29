@@ -110,7 +110,8 @@
     </td>
   </tr>
   @endforeach
+  {{ $users->links() }}
 </table>
-</body>
 
+</body>
 </html>

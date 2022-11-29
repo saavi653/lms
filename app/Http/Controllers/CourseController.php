@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Course;
+use App\Models\CourseImage;
 use App\Models\Level;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,8 +24,8 @@ class CourseController extends Controller
             'order',
             'sort',
     
-        ]));
-  
+         ]));
+
         return view('course.index', compact('courses', 'categories', 'levels'));
 
     }   
@@ -44,11 +45,15 @@ class CourseController extends Controller
         $attributes = $request->validate([
             'title' => 'required|min:3|max:255',
             'description' => 'required|min:3',
-            'level_id' => ['required',
-            Rule::in(Level::level())],
-            'category_id' => ['required',
-            Rule::in($categories)
-            ] 
+            'level_id' => [
+                'required',
+                Rule::in(Level::level())
+            ],
+            'category_id' => [
+                'required',
+                 Rule::in($categories)
+            ],
+            // 'image_path' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048' 
 
         ]);
       
@@ -65,7 +70,14 @@ class CourseController extends Controller
                 'certificate' => 1
             ];
         }
-        Course::create($attributes);
+        $course=Course::create($attributes);
+
+    //    $image = request()->file('image_path')->store('/images');
+    //    CourseImage::create(
+    //     [
+
+    //         'image_path'=>$image,'course_id'=>$course->id 
+    //     ]);
         if ($request->get('save')=='Save')
         {
             return redirect()->route('courses.index')

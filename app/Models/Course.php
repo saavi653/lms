@@ -36,10 +36,9 @@ class Course extends Model
     public function enrollments()
     {
         return $this->belongsToMany(User::class)
-            ->withPivot('user_id')
+            ->withPivot('id')
             ->withTimestamps()
             ->using(CourseUser::class);
-
     }
     public function units()
     {
@@ -71,13 +70,20 @@ class Course extends Model
         return $this->belongsTo(Level::class);
     }
 
+    public function image()
+    {
+
+        return $this->hasOne(CourseImage::class);
+    }
+
+
    
     public function scopeSearch($query,array $value)
     {
         
        if($value==null)
        {
-        return $query->visibleto()->get() ;
+        return $query->visibleto()->Paginate(2) ;
        }
         elseif(isset($value['order']))
         {

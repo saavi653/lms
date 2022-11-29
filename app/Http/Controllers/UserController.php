@@ -20,7 +20,7 @@ class UserController extends Controller
             'role'
         
         ]));
-        $users = $users->visibleTo(Auth::user())->get();
+        $users = $users->visibleTo(Auth::user())->Paginate(7);
         $roles=Role::role();
 
         return view('user.index', [
@@ -38,20 +38,22 @@ class UserController extends Controller
     
        $roles = Role::role();
        $roles=$roles->pluck('id');
-        $attributes= $request->validate(
-            [
-                'first_name'=>'required|min:3|max:255',
-                'last_name'=>'required|min:3|max:255',
-                'email'=>'email|required',
-                'gender' => 'required',
-                'phone' => 'required|digits:10',
-                'role_id' => ['required',
-                Rule::in($roles) ]        
-            ] );
-                $attributes +=[
-                    'created_by' => Auth::id()
-                ];
-            $restore=User::where('email',$request->email)->withTrashed()->first();
+        $attributes= $request->validate([
+            'first_name'=>'required|min:3|max:255',
+            'last_name'=>'required|min:3|max:255',
+            'email'=>'email|required',
+            'gender' => 'required',
+            'phone' => 'required|digits:10',
+            'role_id' => ['required',
+            Rule::in($roles) ]        
+        ],
+        [
+            'first_name.required' => 'The attribute field is mandatory ' 
+        ]);
+            $attributes +=[
+                'created_by' => Auth::id()
+            ];
+        $restore=User::where('email',$request->email)->withTrashed()->first();
             if($restore!=null)
             {
                 if($restore->deleted_at)
