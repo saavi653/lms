@@ -1,4 +1,5 @@
 @include('dashboard')
+@include('navbar')
 <div class="outer1">
 <div class="inner1">
 <form action="{{ route('categories.update', $category) }}" method="POST">
@@ -11,6 +12,7 @@
     {{ $message }}
     @enderror
 </div>
+<input type="text" value="{{ $category->id }}" name="id" hidden >
 <input type="submit" name="submit" class="btn btn-primary b1 b2">
 </form>
 </body>

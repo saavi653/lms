@@ -83,7 +83,7 @@ class Course extends Model
         
        if($value==null)
        {
-        return $query->visibleto()->Paginate(2) ;
+            return $query->visibleto()->get() ;
        }
         elseif(isset($value['order']))
         {
@@ -124,5 +124,10 @@ class Course extends Model
                 ->visibleto()->get();
         }   
         
+    }
+    public function scopePublished($query)
+    {
+    
+       return $query->where('status_id',Status::PUBLISH);
     }
 }

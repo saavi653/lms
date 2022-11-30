@@ -8,7 +8,7 @@
             Add 
             </button>
            
-            <form action="{{ route('enrolled.store',$course) }}" method="POST">
+            <form action="{{ route('userenrolled.store',$course) }}" method="POST">
                 @csrf
             <div>
             <ul class="dropdown-menu"> 
@@ -24,7 +24,7 @@
             <h4>enrolled users</h4>
             @foreach($enrolledUsers as $enrolledUser) 
                 {{ $enrolledUser->first_name }}
-                <form action="{{ route('enrolled.delete', ['course' => $course->id, 'user' => $enrolledUser->id]) }}" method="POST">
+                <form action="{{ route('userenrolled.delete', ['course' => $course->id, 'user' => $enrolledUser->id]) }}" method="POST">
                 @csrf
                 @method('DELETE')
               <input type="submit" name="submit" value="unenroll" class="btn btn-danger">

@@ -1,4 +1,5 @@
 @include('dashboard')
+@include('navbar')
 <div class="container5">
 <div class="head2">
 <span class="head3"><h4><a href="{{ route('courses.index') }}">Courses</a> > Edit Course</h4></span>

@@ -1,4 +1,5 @@
 @include('dashboard')
+@include('navbar')
 <form action="{{ route('users.update',$user) }}" method="POST">
     @csrf
     <div class="outer3">

@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
-class EnrollController extends Controller
+class UserEnrolmentController extends Controller
 {
     public function index(Course $course)
     {
@@ -21,7 +21,7 @@ class EnrollController extends Controller
             })
             ->get();
 
-        return view('learner.show', [
+        return view('course.userenrol', [
             'users' => $users,
             'enrolledUsers' => $course->enrollments()->get(),
             'course' => $course

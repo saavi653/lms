@@ -3,7 +3,7 @@
   <h3 class="head1">Categories</h3>
 <form action="" method="get">
             <div class="d-flex search">
-                <input class="form-control" type="text" name="search" placeholder="Search by Name and Email">
+                <input class="form-control" type="text" name="search" placeholder="Search by Name and Email" value="{{ request()->search }}">
                 <i class="bi bi-search"></i>
             </div>
         </form>
@@ -58,7 +58,7 @@
     <td>{{ $category->user->fullname}}
       <span class="eml">{{ $category->user->email }}</span>
     </td>
-    <td></td>
+    <td>{{ $category->courses->count() }}</td>
     <td>{{ $category->created_at }}</td>
     <td>
       @if($category->status)

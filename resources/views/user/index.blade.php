@@ -3,7 +3,7 @@
   <h3 class="head1">Users</h3>
   <form action="" method="get">
     <div class="d-flex search">
-      <input class="form-control" type="text" name="search" placeholder="Search by Name and Email" value="" >
+      <input class="form-control" type="text" name="search" placeholder="Search by Name and Email" value="{{ request()->search }}" >
       <i class="bi bi-search"></i>
     </div>
   </form>
@@ -69,7 +69,7 @@
       <span class='eml'> {{$user->email}}</span>
     </td>
     <td>{{ $user->role->name }}</td>
-    <td> </td>
+    <td>{{ $user->enrollments->count() }} </td>
     <td>{{ $user->created_at }}</td>
     @if($user->email_status)
     <td>

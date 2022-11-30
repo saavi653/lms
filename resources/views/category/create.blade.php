@@ -1,4 +1,5 @@
 @include('dashboard')
+@include('navbar')
 <div class="outer1">
 <div class="inner1">
 <form action="{{ route('categories.store') }}" method="POST">

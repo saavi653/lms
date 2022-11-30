@@ -13,13 +13,14 @@ class UnitController extends Controller
        return view('unit.create', compact('course'));
     }
     public function store(Course $course, Request $request){
-       
+      
         $attributes = $request->validate([
             'title' => 'required|min:3|max:255',
             'description' => 'required|min:3',
         ]);
 
         $unit=Unit::create($attributes);
+        
         CourseUnit::create([
             'course_id' => $course->id,
             'unit_id' => $unit->id
@@ -27,7 +28,7 @@ class UnitController extends Controller
         ]);
        
         if ($request['Submit']=='Save')
-        {
+        { 
             return redirect()->route('courses.show', $course)
                 ->with('success','unit created successfully');
         }

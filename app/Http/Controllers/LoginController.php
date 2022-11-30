@@ -31,6 +31,7 @@ class LoginController extends Controller
         }    
         return back()->with('success','user inactive');  
     }
+   
 }
 
     

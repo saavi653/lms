@@ -17,17 +17,15 @@ class CourseController extends Controller
     {
         $categories=Category::visibleto()->active()->get();
         $levels=Level::get();
-         $courses=Course::Search(request([
+        $courses=Course::Search(request([
             'search',
             'category',
             'level',
             'order',
-            'sort',
-    
-         ]));
+            'sort'
+        ]));
 
         return view('course.index', compact('courses', 'categories', 'levels'));
-
     }   
 
     public function create()

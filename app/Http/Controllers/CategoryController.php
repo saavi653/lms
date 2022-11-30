@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     { 
         $categories=Category::Search(request([
             'search',
@@ -27,16 +28,18 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
+
         $attributes = $request->validate([
-                'name' => 'string|min:3|max:255|required'
+
+                'name' => 'string|min:3|max:255|required'    
             ]);
-            
             $attributes += [
+
                 'created_by' => Auth::id()
             ];
             
             $restore=Category::where('name',$request->name)->withTrashed()->First();
-            // dd($restore->deleted_at);
+            
             if($restore!=null)
             {
                 if($restore->deleted_at)
@@ -58,11 +61,17 @@ class CategoryController extends Controller
             ]);
     } 
     public function update(Request $request, Category $category){
-        $data=$request->validate(
+        $ids = Category::visibleTo()->pluck('id')->toArray();
+        // dd($ids);
+        $attributes=$request->validate(
             [
-                'name' => 'required|min:3|max:255|string'
+                'name' => 'required|min:3|max:255|string',
+                'id' => ['required',
+                    Rule::in($ids)
+                ]
             ]);
-        $category->update($data);
+            // dd($attributes);
+        $category->update($attributes);
 
         return redirect()->route('categories.index')
             ->with('success','category updated successfully');

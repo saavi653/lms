@@ -1,4 +1,5 @@
 @include('dashboard')
+@include('navbar')
 <div class="container5">
 <form action="{{ route('units.store',$course) }}" method="POST">
     @csrf

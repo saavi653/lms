@@ -8,12 +8,14 @@ use App\Http\Controllers\CourseEnrollmentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmploymentController;
 use App\Http\Controllers\EnrollController;
+use App\Http\Controllers\ForgetPasswordController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\ResetpasswordController;
 use App\Http\Controllers\SetpasswordController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserEnrolmentController;
 use App\Notifications\SetPasswordNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -46,6 +48,13 @@ Route::get('/',function(){
 Route::get('logout',[LogoutController::class,'logout'])->name('logout');
 
 Route::post('/login/check',[LoginController::class ,'login'])->name('login.check');
+
+Route::get('/forgetpassword',[ForgetPasswordController::class ,'index'])->name('forgetpassword');
+Route::post('/forgetpassword',[ForgetPasswordController::class ,'forgetpassword'])->name('mail-sending');
+Route::get('/settingpassword',[ForgetPasswordController::class ,'create'])->name('settingpassword');
+Route::post('/settingpassword',[ForgetPasswordController::class ,'store'])->name('password.store');
+
+
 
 Route::middleware(['auth'])->group(function(){
 
@@ -119,9 +128,9 @@ Route::controller(UnitController::class)->group(function () {
 
 });
 
-Route::get('courses/{course:slug}/enrolled', [EnrollController::class,'index'])->name('enrolled.index');
-Route::post('courses/{course}/enrolled', [EnrollController::class,'store'])->name('enrolled.store');
-Route::delete('courses/{course}/users/{user}/delete', [EnrollController::class,'delete'])->name('enrolled.delete');
+Route::get('courses/{course:slug}/enrolled', [UserEnrolmentController::class,'index'])->name('userenrolled.index');
+Route::post('courses/{course}/enrolled', [UserEnrolmentController::class,'store'])->name('userenrolled.store');
+Route::delete('courses/{course}/users/{user}/delete', [UserEnrolmentController::class,'delete'])->name('userenrolled.delete');
 
 
 Route::get('users/{user:slug}/enrolled', [CourseEnrollmentController::class,'index'])->name('enrolledCourse.index');

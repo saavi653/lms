@@ -2,8 +2,8 @@
 @include('flash')
 <section class="outer">
     <div class="inner">
-    <h3 style="margin-left:60px;">ACCOUNT LOGIN </h3>
-    <form action="{{ route('login.check') }}" method="POST">
+    <h3 style="margin-left:60px;">CREATE NEW PASSWORD </h3>
+    <form action="{{ route('password.store') }}" method="POST">
         @csrf
         <div class="label">
             <label class="lab">Email</label>
@@ -22,8 +22,16 @@
             @error('password')
             {{ $message }}
             @enderror
+        </div>
+        <div class="label">
+            <label class="lab">ConfirmPassword</label>
+            <input type="password" name="confirmpassword" class="b1">
             </div>
-            <a href="{{ route('forgetpassword')}}">forgetpassword</a>
+            <div class="error">
+            @error('confirmpassword')
+            {{ $message }}
+            @enderror
+            </div>  
         <input type="submit" name="submit" class="btn btn-primary b1 b2">
     </form>
 </div>

@@ -1,6 +1,5 @@
 @include('dashboard')
 @include('navbar')
-
 <div class="out">
 
     <h3>courses</h3>
@@ -18,7 +17,7 @@
     <div class=c2>
         <form action="" method="get">
             <div class="d-flex iteam1 srh">
-                <input class="form-control" type="text" name="search" placeholder="Search by Course and description ">
+                <input class="form-control" type="text" name="search" placeholder="Search by Course and description" value="{{ request()->search }}">
                 <i class="bi bi-search"></i>
             </div>
         </form>
@@ -73,7 +72,7 @@
         <i class="bi bi-three-dots-vertical "></i></button>
         <ul class="dropdown-menu">
           <li><a class="dropdown-item" href="{{ route('courses.edit',$course)}}">Edit Course</a></li>
-          <li><a class="dropdown-item" href="{{ route('enrolled.index',$course)}}">Users</a></li>
+          <li><a class="dropdown-item" href="{{ route('userenrolled.index',$course)}}">Users</a></li>
           @if($course->status_id!=1)
           <li><a class="dropdown-item" href="{{ route('courses.status',$course) }}?status=publish">Publish</a></li>
           @endif
@@ -86,7 +85,6 @@
         </ul>
     </div>
     @endforeach  
-    {{ $courses->links() }}
     </div>
 </body>
 </html>

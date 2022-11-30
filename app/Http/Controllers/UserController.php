@@ -20,18 +20,18 @@ class UserController extends Controller
             'role'
         
         ]));
-        $users = $users->visibleTo(Auth::user())->Paginate(7);
+        $users = $users->visibleTo(Auth::user())->Paginate();
         $roles=Role::role();
 
         return view('user.index', [
             'users' => $users,
             'roles' => $roles
             ]);
-}
+    }
 
    public function create() {
-    $roles = Role::role();
-    return view('user.create',['roles'=>$roles]);
+        $roles = Role::role();
+        return view('user.create',['roles'=>$roles]);
    }
 
    public function store(Request $request) {
@@ -53,7 +53,7 @@ class UserController extends Controller
             $attributes +=[
                 'created_by' => Auth::id()
             ];
-        $restore=User::where('email',$request->email)->withTrashed()->first();
+            $restore=User::where('email',$request->email)->withTrashed()->first();
             if($restore!=null)
             {
                 if($restore->deleted_at)
