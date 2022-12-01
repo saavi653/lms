@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\User;
+use App\Notifications\EnrollNotification;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\Rule;
 
 class UserEnrolmentController extends Controller
@@ -29,7 +31,7 @@ class UserEnrolmentController extends Controller
     }
     public function store(Course $course,Request $request)
     {
-       
+       // 1 course->multiple user's.
         $attribute = $request->validate([
             'user_id' => [
                 'required',
@@ -47,7 +49,9 @@ class UserEnrolmentController extends Controller
             ]
         ]);
         $course->enrollments()->attach($attribute['user_id']);
-
+        $users = User::find($attribute['user_id']);
+        Notification::send($users, new EnrollNotification($course, Auth::user()));
+    
         return back()->with('success','user enrolled succesfully');;
     }
     public function delete(Course $course,User $user)

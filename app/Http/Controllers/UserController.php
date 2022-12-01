@@ -19,10 +19,10 @@ class UserController extends Controller
             'sort',
             'role'
         
-        ]));
+        ]))
+        ->withCount('enrollments');
         $users = $users->visibleTo(Auth::user())->Paginate();
         $roles=Role::role();
-
         return view('user.index', [
             'users' => $users,
             'roles' => $roles

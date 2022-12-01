@@ -69,7 +69,7 @@
       <span class='eml'> {{$user->email}}</span>
     </td>
     <td>{{ $user->role->name }}</td>
-    <td>{{ $user->enrollments->count() }} </td>
+    <td>{{ $user->enrollments_count }}</td>
     <td>{{ $user->created_at }}</td>
     @if($user->email_status)
     <td>
