@@ -11,16 +11,16 @@ use Illuminate\Notifications\Notification;
 class ForgetPasswordNotification extends Notification
 {
     use Queueable;
-    private $user;
+   
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct()
     {
-        $this->user=$user;
+        
     }
 
     /**
@@ -41,12 +41,12 @@ class ForgetPasswordNotification extends Notification
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
-    {  
+    {   
         return (new MailMessage)
       
             ->subject('welcome ')
-            ->greeting('welcome'." ".$notifiable['first_name'])
-            ->action('forget password', route('settingpassword',$notifiable))
+            ->greeting('welcome'." ".$notifiable->first_name)
+            ->action('forget password', route('settingpassword', $notifiable))
             ->line('Thank you for using our application!');
                    
     }
@@ -60,7 +60,7 @@ class ForgetPasswordNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'message' => 'forget password done by '.$notifiable['email'].'at'.$notifiable['created_at']
+            'message' => 'forget password done by '.$notifiable->email.'  '.'at'.$notifiable->created_at
         ];
     }
 }

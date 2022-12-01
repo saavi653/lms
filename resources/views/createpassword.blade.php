@@ -3,17 +3,8 @@
 <section class="outer">
     <div class="inner">
     <h3 style="margin-left:60px;">CREATE NEW PASSWORD </h3>
-    <form action="{{ route('password.store') }}" method="POST">
+    <form action="{{ route('password.store', $user) }}" method="POST">
         @csrf
-        <div class="label">
-            <label class="lab">Email</label>
-            <input type="text" name="email" class="b1">
-            </div>
-            <div class="error">
-            @error('email')
-            {{ $message }}
-            @enderror
-        </div>
         <div class="label">
             <label class="lab">Password</label>
             <input type="password" name="password" class="b1">

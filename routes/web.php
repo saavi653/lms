@@ -51,8 +51,8 @@ Route::post('/login/check',[LoginController::class ,'login'])->name('login.check
 
 Route::get('/forgetpassword',[ForgetPasswordController::class ,'index'])->name('forgetpassword');
 Route::post('/forgetpassword',[ForgetPasswordController::class ,'forgetpassword'])->name('mail-sending');
-Route::get('/settingpassword',[ForgetPasswordController::class ,'create'])->name('settingpassword');
-Route::post('/settingpassword',[ForgetPasswordController::class ,'store'])->name('password.store');
+Route::get('/settingpassword/{user}',[ForgetPasswordController::class ,'create'])->name('settingpassword');
+Route::post('/settingpassword/{user}',[ForgetPasswordController::class ,'store'])->name('password.store');
 
 
 
