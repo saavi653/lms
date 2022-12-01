@@ -15,7 +15,8 @@ class CategoryController extends Controller
             'search',
             'sort'
         
-        ]));
+        ]))
+        ->withCount('courses');
         $categories = $categories->visibleto()->simplepaginate(5);
     
         return view('category.index', ['categories'=>$categories]);  
@@ -56,11 +57,15 @@ class CategoryController extends Controller
     }
     public function edit(Category $category)
     {
+        $this->authorize('update', $category);
+
         return view('category.edit', [
             'category' => $category
             ]);
     } 
-    public function update(Request $request, Category $category){
+    public function update(Request $request, Category $category) 
+    {
+        $this->authorize('update', $category);
         $ids = Category::visibleTo()->pluck('id')->toArray();
         // dd($ids);
         $attributes=$request->validate(

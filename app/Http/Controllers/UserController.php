@@ -80,13 +80,15 @@ class UserController extends Controller
    }
 
    public function edit(User $user) {
+
+    $this->authorize('update',$user);
     $roles = Role::role();
 
     return view('user.edit',['user'=>$user,'roles'=> $roles]);
    }
 
    public function update(Request $req ,User $user) {
-
+    $this->authorize('update',$user);
     $data= $req->validate(
         [
             'first_name'=>'required|min:3',

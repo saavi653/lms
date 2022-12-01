@@ -58,7 +58,7 @@
     <td>{{ $category->user->fullname}}
       <span class="eml">{{ $category->user->email }}</span>
     </td>
-    <td></td>
+    <td>{{ $category->courses_count }}</td>
     <td>{{ $category->created_at }}</td>
     <td>
       @if($category->status)
