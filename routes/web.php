@@ -13,6 +13,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\ResetpasswordController;
 use App\Http\Controllers\SetpasswordController;
+use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserEnrolmentController;
@@ -37,7 +38,10 @@ Route::get('/',function(){
         {
             return redirect()->route('learner.index');
         }
-        return redirect()->route('dashboard.index');
+        elseif(Auth::user()->IsTrainer) // demo template code...
+        {
+            return redirect()->route('trainer.index');
+        }
     }
     else{
         return view('login');
@@ -143,6 +147,20 @@ Route::get('overview',[DashboardController::class,'overview'])->name('overview.i
 
 
 Route::get('/employee',[EmploymentController::class,'index'])->name('learner.index');
+
+//demo template code
+
+Route::get('/admin/templates', [TemplateController::class,'adminIndex'])->name('admin_template.index');
+Route::get('admin/templates/edit/{template}', [TemplateController::class,'edit'])->name('template.edit');
+Route::post('admin/templates/update/{template}', [TemplateController::class,'update'])->name('template.update');
+Route::post('admin/templates/delete/{template}', [TemplateController::class,'delete'])->name('template.delete');
+Route::post('admin/templates/delete/{template}', [TemplateController::class,'delete'])->name('template.delete');
+Route::get('admin/templates/push/{template}', [TemplateController::class,'push'])->name('templates.push');
+
+Route::get('/trainer',[TemplateController::class,'index'])->name('trainer.index');
+Route::get('/templates/{user}',[TemplateController::class,'create'])->name('trainer.create');
+
+
 });
 
 

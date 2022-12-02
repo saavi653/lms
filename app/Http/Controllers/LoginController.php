@@ -25,7 +25,8 @@ class LoginController extends Controller
         { 
             if(Auth::attempt($data)) 
             {       
-                return redirect('/');
+                // dd('here');
+                return redirect()->route('dashboard.index');
             }
             return back()->with('success','incorrect credential'); 
         }    

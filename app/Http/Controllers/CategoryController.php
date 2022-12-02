@@ -17,7 +17,7 @@ class CategoryController extends Controller
         
         ]))
         ->withCount('courses');
-        $categories = $categories->visibleto()->simplepaginate(5);
+        $categories = $categories->visibleto()->paginate(10);
     
         return view('category.index', ['categories'=>$categories]);  
     }

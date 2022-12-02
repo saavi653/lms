@@ -12,7 +12,7 @@
             <div>
             <ul class="dropdown-menu"> 
             @foreach($courses as $course) 
-            <li><input type="checkbox"  name="course_id[]" value="{{ $course->id }}">
+            <li><input type="checkbox"  name="course_ids[]" value="{{ $course->id }}">
             <label>{{ $course->title }}</label>
             @endforeach
            <li>

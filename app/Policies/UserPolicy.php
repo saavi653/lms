@@ -19,8 +19,8 @@ class UserPolicy
     {
         //
     }
-    public function update(User $user, User $my)
+    public function update(User $user, User $user1)
     {
-        return $user->id === $my->created_by;
+        return $user->id === $user1->created_by;
     }
 }

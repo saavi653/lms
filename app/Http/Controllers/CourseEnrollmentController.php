@@ -31,7 +31,7 @@ class CourseEnrollmentController extends Controller
     {    
       //1 user-> multiple course
         $attribute = $request->validate([
-            'course_id' => [
+            'course_ids' => [
                 'required',
                 'array',
                 Rule::in(Course::VisibleTo(Auth::user())
@@ -44,10 +44,12 @@ class CourseEnrollmentController extends Controller
                 )
             ]
         ]);
-        $user->enrollments()->attach($attribute['course_id']);
-        $courses = Course::find($attribute['course_id']);
+        $user->enrollments()->attach($attribute['course_ids']);
+        $courses = Course::find($attribute['course_ids']);
        
-        Notification::send($user, new CourseEnrollNotification($courses , Auth::user()));
+        $courses->each(function ($course) use($user) {
+            Notification::send($user, new CourseEnrollNotification($course , Auth::user()));
+        });
 
         return back()->with('success','course enrolled succesfully');;
     }

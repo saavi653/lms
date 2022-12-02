@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Role;
+use App\Models\Template;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Notifications\SetPasswordNotification;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\Rule;
 
@@ -21,7 +23,7 @@ class UserController extends Controller
         
         ]))
         ->withCount('enrollments');
-        $users = $users->visibleTo(Auth::user())->Paginate();
+        $users = $users->visibleTo(Auth::user())->Paginate(10);
         $roles=Role::role();
         return view('user.index', [
             'users' => $users,
@@ -65,7 +67,17 @@ class UserController extends Controller
             else
             {
                 $user = User::create($attributes);
-                Notification::send($user, new SetPasswordNotification(Auth::user()));
+                // Notification::send($user, new SetPasswordNotification(Auth::user()));
+
+                //demo template code ...
+
+                // $user is like a trainer.
+                if($user->role_id==Role::TRAINER)
+                {
+
+                    return redirect()->route('trainer.create',$user);
+               
+                }
                
                 if($request->get('submit') == 'INVITE USER')
                 {
@@ -84,7 +96,10 @@ class UserController extends Controller
     $this->authorize('update',$user);
     $roles = Role::role();
 
-    return view('user.edit',['user'=>$user,'roles'=> $roles]);
+    return view('user.edit', [
+        'user' => $user,
+        'roles' => $roles
+    ]);
    }
 
    public function update(Request $req ,User $user) {

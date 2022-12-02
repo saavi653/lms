@@ -12,19 +12,18 @@ use Illuminate\Notifications\Notification;
 class CourseEnrollNotification extends Notification
 {
     use Queueable;
-    private $sender;
-    private $courses=[];
+    public $user;
+    public $course;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct( $courses, User $sender)
+    public function __construct(Course $course, User $user)
     {
-        $this->sender = $sender;
-        $this->courses = $courses->pluck('title');
-    //    dd($this->courses);
+        $this->user = $user;
+        $this->course = $course;
     }
 
     /**
@@ -48,8 +47,7 @@ class CourseEnrollNotification extends Notification
     {
         return (new MailMessage)
             ->line('welcome'.' '.$notifiable->full_name)
-            ->line('you are assigned into :-'.$this->courses)
-            ->line('by '. $this->sender->full_name)
+            ->line('you are enrolled into:- '.$this->course->title . 'by '. $this->user->full_name)
             ->line('Thank You!');
     }
 
@@ -62,7 +60,7 @@ class CourseEnrollNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'message' => $notifiable->full_name.' is assign into '.$this->courses.' by '.$this->sender->full_name
+            // 'message' => $notifiable->full_name.' is assign into '.$this->courses.' by '.$this->sender->full_name
         ];
     }
 }
