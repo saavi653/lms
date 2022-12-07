@@ -28,7 +28,10 @@
 @foreach($questions as $question)
 <br>
 {{ $question->question }}
-<a href="{{ route('courses.units.tests.questions.edit', [$test, $question]) }}">EDIT</a>
-<a href="{{ route('courses.units.tests.questions.delete', [$test, $question]) }}">DELETE</a>
+<a href="{{ route('courses.units.tests.questions.edit', [$course, $unit, $test, $question]) }}">EDIT</a>
+<form action="{{ route('courses.units.tests.questions.delete', $question) }}" method="POST">
+    @method('DELETE')
+    @csrf 
+    <input type="submit" value="delete" required />
 @endforeach
 </div>

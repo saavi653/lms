@@ -5,7 +5,7 @@
     @csrf
     <div class="outer2">
     <div class="container4">
-    <form action="{{ route('courses.units.tests.questions.update', [$test, $question]) }}" method="POST"> 
+    <form action="{{ route('courses.units.tests.questions.update', [$course, $unit, $test, $question]) }}" method="POST"> 
      @csrf   
     <div class="bold"><label>WRITE A QUESTION.</label></div>
     <input type="text" name="question" class="input" value="{{ $question->question }}" required>
@@ -14,7 +14,12 @@
     @enderror
     @for($i=0;$i<=3;$i++)
     <div class="bold"><label>OPTION-{{ $i }}</label></div>
-    <input type="radio" name="answer" value="{{ $i }}"><input type="text" name="option[]".$i class="input" required> 
+    @if($options[$i]==$answer)
+        <input type="radio" name="answer" value="{{ $i }}" checked>
+    @else
+        <input type="radio" name="answer" value="{{ $i }}" >
+    @endif
+    <input type="text" value="{{ $options[$i] }}" name="option[]".$i class="input" required> 
     @error('option'.$i)
     {{ $message }}
     @enderror

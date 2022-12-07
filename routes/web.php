@@ -149,10 +149,10 @@ Route::controller(TestController::class)->group(function () {
 Route::get('/courses/{course}/units/{unit}/tests/{test}/questions/create',[QuestionController::class,'create'])->name('courses.units.tests.questions.create');
 Route::post('/courses/{course}/units/{unit}/tests/{test}/questions/store',[QuestionController::class,'store'])->name('courses.units.tests.questions.store');
 
-Route::get('/courses/units/tests/{test}/questions/{question}/edit',[QuestionController::class,'edit'])->name('courses.units.tests.questions.edit');
-Route::post('/courses/units/tests/{test}/questions/{question}/update',[QuestionController::class,'update'])->name('courses.units.tests.questions.update');
+Route::get('/courses/{course}/units/{unit}/tests/{test}/questions/{question}/edit',[QuestionController::class,'edit'])->name('courses.units.tests.questions.edit');
+Route::post('/courses/{course}/units/{unit}/tests/{test}/questions/{question}/update',[QuestionController::class,'update'])->name('courses.units.tests.questions.update');
 
-Route::delete('/courses/units/tests/{test}/questions/{question}/delete',[QuestionController::class,'delete'])->name('courses.units.tests.questions.delete');
+Route::delete('/courses/units/tests/questions/{question}/delete',[QuestionController::class,'delete'])->name('courses.units.tests.questions.delete');
 
 
 
