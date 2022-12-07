@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\CourseUnit;
 use App\Models\Course;
+use App\Models\Test;
 use App\Models\Unit;
 use Illuminate\Http\Request;
 
@@ -37,7 +38,10 @@ class UnitController extends Controller
      }
      public function edit(Course $course, Unit $unit )
     {
-        return view('unit.edit',compact('unit','course'));
+        //display tests of a given unit
+        $tests = Test::where('unit_id',$unit->id)->get();
+        
+        return view('unit.edit',compact('unit','course','tests'));
     }
     public function update(Request $request,Course $course,Unit $unit){
 

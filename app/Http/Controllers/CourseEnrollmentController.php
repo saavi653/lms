@@ -45,6 +45,7 @@ class CourseEnrollmentController extends Controller
             ]
         ]);
         $user->enrollments()->attach($attribute['course_ids']);
+        
         $courses = Course::find($attribute['course_ids']);
        
         $courses->each(function ($course) use($user) {

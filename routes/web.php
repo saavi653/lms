@@ -11,9 +11,11 @@ use App\Http\Controllers\EnrollController;
 use App\Http\Controllers\ForgetPasswordController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\ResetpasswordController;
 use App\Http\Controllers\SetpasswordController;
 use App\Http\Controllers\TemplateController;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserEnrolmentController;
@@ -122,15 +124,37 @@ Route::controller(CourseController::class)->group(function () {
 
 Route::controller(UnitController::class)->group(function () {
 
-    Route::get('/courses/{course:slug}/units/create','create')->name('units.create');
-    Route::post('/courses/{course}/units/store/','store')->name('units.store');
+    Route::get('/courses/{course:slug}/units/create','create')->name('courses.units.create');
+    Route::post('/courses/{course}/units/store/','store')->name('courses.units.store');
 
-    Route::get('/courses/{course:slug}/units/{unit:slug}/edit','edit')->name('units.edit');
-    Route::post('/courses/{course}/units/{unit}/update','update')->name('units.update');
+    Route::get('/courses/{course:slug}/units/{unit:slug}/edit','edit')->name('courses.units.edit');
+    Route::post('/courses/{course}/units/{unit}/update','update')->name('courses.units.update');
 
-    Route::delete('/courses/units/{unit:slug}/delete','delete')->name('units.delete');
+    Route::delete('/courses/units/{unit:slug}/delete','delete')->name('courses.units.delete');
 
 });
+
+Route::controller(TestController::class)->group(function () {
+
+    Route::get('/courses/{course:slug}/units/{unit:slug}/tests/create', 'create')->name('courses.units.tests.create');
+    Route::post('/courses/{course:slug}/units/{unit:slug}/test/store', 'store')->name('courses.units.tests.store');
+
+    Route::get('/courses/{course:slug}/units/{unit:slug}/tests/{test}/edit', 'edit')->name('courses.units.tests.edit');
+    Route::post('/courses/{course:slug}/units/{unit:slug}/tests/{test}/update', 'update')->name('courses.units.tests.update');
+
+    Route::delete('/courses/units/tests/{test}/delete', 'delete')->name('courses.units.tests.delete');
+
+});
+
+Route::get('/courses/{course}/units/{unit}/tests/{test}/questions/create',[QuestionController::class,'create'])->name('courses.units.tests.questions.create');
+Route::post('/courses/{course}/units/{unit}/tests/{test}/questions/store',[QuestionController::class,'store'])->name('courses.units.tests.questions.store');
+
+Route::get('/courses/units/tests/{test}/questions/{question}/edit',[QuestionController::class,'edit'])->name('courses.units.tests.questions.edit');
+Route::post('/courses/units/tests/{test}/questions/{question}/update',[QuestionController::class,'update'])->name('courses.units.tests.questions.update');
+
+Route::delete('/courses/units/tests/{test}/questions/{question}/delete',[QuestionController::class,'delete'])->name('courses.units.tests.questions.delete');
+
+
 
 Route::get('courses/{course:slug}/enrolled', [UserEnrolmentController::class,'index'])->name('userenrolled.index');
 Route::post('courses/{course}/enrolled', [UserEnrolmentController::class,'store'])->name('userenrolled.store');

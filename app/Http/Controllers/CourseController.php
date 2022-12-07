@@ -106,6 +106,7 @@ class CourseController extends Controller
 
             'title' => 'required|min:3|max:255',
             'description' => 'required|min:3',
+            'status_id' => 'required',
             'level_id' => ['required',
                  Rule::in(Level::level())],
             'category_id' => ['required',

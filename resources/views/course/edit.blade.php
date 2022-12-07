@@ -45,9 +45,11 @@
     <input type="checkbox" name="certificate" value="certificate" @if($course->certificate) checked
     @endif >
     <label for="certificate">Certificate</label>
+   <input type="text" name="status_id" value="{{ $course->status_id }}" hidden>
     <div class="bold"><input type="submit" name="Submit" value="submit" class="btn btn-secondary"></div>
     <a href="{{ route('courses.show',$course) }}" class="btn btn-light btn8">cancel</a>
 </div>
     </form>
 </div>
 </div>
+

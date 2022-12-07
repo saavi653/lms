@@ -49,6 +49,7 @@ class UserEnrolmentController extends Controller
             ]
         ]);
         $course->enrollments()->attach($attribute['user_id']);
+        
         $users = User::find($attribute['user_id']);
         Notification::send($users, new EnrollNotification($course, Auth::user()));
     
