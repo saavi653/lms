@@ -401,6 +401,7 @@ img{
     left: 81px;
     top: 2px;
 }
+
 .status{
     width: 74px;
     height: 24px;
@@ -455,13 +456,13 @@ img{
 }
 .edit1{
     position: relative;
-    right:-882px;
+    right:-865px;
     top:-150px;
     background-color: #b6bbc1;
 }
 .delete{
     position: relative;
-    right: -932px;
+    right:868px;
     top: -6px;
 }
 .edit1 a{

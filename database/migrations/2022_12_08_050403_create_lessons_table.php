@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('options', function (Blueprint $table) {
+        Schema::create('lessons', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('question_id');
-            $table->foreign('question_id')->references('id')->on('test_questions')->cascadeOnDelete();
-            $table->string('option');
-            $table->boolean('answer')->default(0);
+            $table->foreignId('unit_id')->constrained()->cascadeOnDelete();
+            $table->integer('lessonable_id');
+            $table->string('lessonable_type');
+            $table->integer('duration');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('options');
+        Schema::dropIfExists('lessons');
     }
 };

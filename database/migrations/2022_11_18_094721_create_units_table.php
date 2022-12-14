@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('slug');
             $table->string('title');
             $table->text('description');
+            $table->integer('duration')->nullable();
             $table->timestamps();
         });
     }

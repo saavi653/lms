@@ -44,6 +44,10 @@ class Course extends Model
     {
         return $this->belongsToMany(Unit::class, 'course_units');
     }
+    public function duration()
+    {
+        return $this->belongsToMany(Unit::class);
+    }
     public function user()
     {
         return $this->belongsTo(User::class);

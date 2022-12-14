@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\Lesson;
 use App\Models\Question;
 use App\Models\Test;
 use App\Models\TestQuestion;
@@ -29,7 +30,20 @@ class TestController extends Controller
             'unit_id' => $unit->id
         ];
         $test = Test::create($attributes);
-       
+
+        $test->lessons()->create([
+
+            'unit_id' => $unit->id,
+            'duration' => $test->duration
+
+        ]);
+
+        $duration=Lesson::where('unit_id',$unit->id)->sum('duration');
+        $unit->where('id',$unit->id)->update(
+            [
+                'duration' => $duration 
+            ]);
+      
         return redirect()->route('courses.units.tests.edit', [$course, $unit, $test])
             ->with('success', 'test created successfully');
     

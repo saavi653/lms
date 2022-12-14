@@ -12,21 +12,23 @@
       <div class="des">{{ $course->description}}</div>
       <div class="btn btn-light edit"><a href="{{ route('courses.edit',$course) }}">EDit Course Info</a></div>
       <div class="bar">
-        <span class="item6">Course duration</span>
-        <span class="item6">Total Unit</span>
+        <span class="item6">Course duration
+          <div>{{ $course->units()->sum('duration')  }} </div>
+        </span>
+        <span class="item6">Total Unit
+          <div>{{ $course->units()->count() }}</div>
+        </span>
         <span class="item6">Course Level</span>
         <span class="item6">Latest Update</span>
         <span class="item6">Certificate of Completion</span>
       </div>
     </div>
 </div>
-
   <h5>Course Content</h5>
   @foreach($course->units as $unit)
   <div class="conn">
     <div class="title1">{{ $unit->title }}</a>
       <div class="des">{{ $unit->description}}</div>
-      <small>Lessons 
         @foreach($unit->tests as $test)
         <br>
         {{ $test->name }}

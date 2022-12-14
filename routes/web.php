@@ -44,6 +44,10 @@ Route::get('/',function(){
         {
             return redirect()->route('trainer.index');
         }
+        else
+        {
+            return redirect()->route('dashboard.index');
+        }
     }
     else{
         return view('login');
@@ -170,7 +174,11 @@ Route::get('/dashboard',[DashboardController::class,'dashboard'])->name('dashboa
 Route::get('overview',[DashboardController::class,'overview'])->name('overview.index');
 
 
-Route::get('/employee',[EmploymentController::class,'index'])->name('learner.index');
+Route::get('/learner/courses',[EmploymentController::class,'index'])->name('learner.index');
+Route::get('/learner/courses/{course}/units',[EmploymentController::class,'showUnit'])->name('learner.units');
+Route::get('/learner/courses/units/{unit}/tests',[EmploymentController::class,'showTest'])->name('learner.tests');
+Route::get('/learner/courses/units/tests/{test}/questions',[EmploymentController::class,'showQuestion'])->name('learner.questions');
+Route::post('/learner/courses/units/tests/{test}/questions/{question}/store',[EmploymentController::class,'store'])->name('learner.questions.store');
 
 //demo template code
 

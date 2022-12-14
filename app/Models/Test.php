@@ -13,4 +13,10 @@ class Test extends Model
         'duration',
         'passing_score'
     ];
+    public function lessons()
+    {
+        
+        return $this->morphMany(Lesson::class, 'lessonable');
+    }
+
 }

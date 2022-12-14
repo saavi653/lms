@@ -12,21 +12,27 @@
     @error('question')
     {{ $message }}
     @enderror
-    @for($i=0;$i<=3;$i++)
+    @php 
+        $i=0;
+    @endphp    
+    @foreach($options as $option )    
     <div class="bold"><label>OPTION-{{ $i }}</label></div>
-    @if($options[$i]==$answer)
+    @if($option['answer'])
         <input type="radio" name="answer" value="{{ $i }}" checked>
     @else
         <input type="radio" name="answer" value="{{ $i }}" >
-    @endif
-    <input type="text" value="{{ $options[$i] }}" name="option[]".$i class="input" required> 
+    @endif 
+    <input type="text" value="{{ $option['option'] }}" name="options[]".$i class="input" required> 
     @error('option'.$i)
     {{ $message }}
     @enderror
-    @error('answer')
+   {{-- @error('answer')
     {{ $message }}
-    @enderror
-    @endfor
+    @enderror --}}
+    @php
+    $i++ ;
+    @endphp
+    @endforeach
     <input type="submit" name="submit" class="btn btn-secondary" value="SAVE"> 
     <input type="submit" name="submit" class="btn btn-secondary" value="SAVE AND ADD ANOTHER " >
     </div>
